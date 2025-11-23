@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html class="light" lang="de">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>NextGen Insurance Forum e.V.</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&amp;display=swap" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap"
+        rel="stylesheet" />
+    <link href="./src/styles/global.css" rel="stylesheet" />
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0E4B94",
+                        "secondary": "#2CD9C3",
+                        "background-light": "#FFFFFF",
+                        "background-dark": "#111121",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"]
+                    },
+                },
+            },
+        }
+    </script>
+</head>
+
+<body class="font-display bg-background-light dark:bg-background-dark text-[#0e0e1b] dark:text-gray-200">
+    <div class="relative flex min-h-screen w-full flex-col">
+        <header id="main-header"
+            class="fixed top-0 z-50 w-full glass-header transition-all duration-300 bg-white/90 backdrop-blur-md shadow-sm dark:bg-background-dark/90">
+            <div class="container mx-auto px-4">
+                <div class="flex h-20 items-center justify-between max-w-6xl mx-auto">
+                    <div class="flex items-center gap-4">
+                        <a href="index.html" class="flex items-center">
+                            <img src="./src/images/logo.png" alt="NextGen Logo" class="h-14 w-auto object-contain" />
+                        </a>
+                    </div>
+                    <nav class="hidden items-center gap-8 text-sm font-medium lg:flex">
+                        <a class="nav-link" href="students.html">Für Studierende</a>
+                        <a class="nav-link" href="companies.html">Für Unternehmen</a>
+                        <a class="nav-link" href="events.html">Veranstaltungen</a>
+                        <a class="nav-link" href="about.html">Über uns</a>
+                        <a class="nav-link" href="contact.html">Kontakt</a>
+                    </nav>
+                    <button class="lg:hidden p-2 text-gray-600 dark:text-gray-300"
+                        onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
+                        <span class="material-symbols-outlined">menu</span>
+                    </button>
+                </div>
+            </div>
+            <div id="mobile-menu"
+                class="hidden lg:hidden absolute top-20 left-0 w-full bg-white dark:bg-[#111121] border-b border-gray-200 dark:border-gray-800 shadow-lg">
+                <div class="flex flex-col p-4 space-y-4">
+                    <a class="text-gray-700 dark:text-gray-300 hover:text-[#0E4B94] dark:hover:text-[#2CD9C3]"
+                        href="students.html">Für Studierende</a>
+                    <a class="text-gray-700 dark:text-gray-300 hover:text-[#0E4B94] dark:hover:text-[#2CD9C3]"
+                        href="companies.html">Für Unternehmen</a>
+                    <a class="text-gray-700 dark:text-gray-300 hover:text-[#0E4B94] dark:hover:text-[#2CD9C3]"
+                        href="events.html">Veranstaltungen</a>
+                    <a class="text-gray-700 dark:text-gray-300 hover:text-[#0E4B94] dark:hover:text-[#2CD9C3]"
+                        href="about.html">Über uns</a>
+                    <a class="text-gray-700 dark:text-gray-300 hover:text-[#0E4B94] dark:hover:text-[#2CD9C3]"
+                        href="contact.html">Kontakt</a>
+                </div>
+            </div>
+        </header>
+
+        <main class="flex-1">
+            <section class="hero-section relative h-[80vh] min-h-[550px] w-full overflow-hidden pt-20">
+                <div class="absolute inset-0 z-0">
+                    <div
+                        class="hero-blob absolute -left-1/4 -top-1/4 h-[50vw] w-[50vw] animate-blob-morph bg-gradient-to-tr from-[#0E4B94]/40 to-[#2CD9C3]/40 blur-3xl dark:from-[#0E4B94]/30 dark:to-[#2CD9C3]/30">
+                    </div>
+                    <div
+                        class="hero-blob absolute -bottom-1/4 -right-1/4 h-[50vw] w-[50vw] animate-blob-morph bg-gradient-to-bl from-[#0E4B94]/40 to-[#2CD9C3]/40 blur-3xl [animation-delay:-3s] dark:from-[#0E4B94]/30 dark:to-[#2CD9C3]/30">
+                    </div>
+                </div>
+                <div
+                    class="relative z-10 mx-auto flex h-full max-w-4xl flex-col items-center justify-center px-4 text-center">
+                    <h1 class="text-5xl font-extrabold leading-tight tracking-tighter md:text-6xl lg:text-7xl">
+                        Innovation trifft Versicherung.
+                    </h1>
+                    <p class="mt-6 max-w-2xl text-lg text-gray-600 dark:text-gray-300 md:text-xl">
+                        Wir vernetzen die Talente von morgen mit den führenden Unternehmen der Versicherungsbranche.
+                        Gestalte mit uns die Zukunft.
+                    </p>
+                    <div class="mt-10 flex flex-col gap-4 sm:flex-row">
+                        <a href="students.html"
+                            class="hero-btn flex h-12 min-w-[84px] items-center justify-center overflow-hidden rounded-lg bg-[#2CD9C3] px-6 text-base font-bold text-white transition-transform hover:scale-105">
+                            <span class="truncate">Für Studierende</span>
+                        </a>
+                        <a href="events.html"
+                            class="hero-btn flex h-12 min-w-[84px] items-center justify-center overflow-hidden rounded-lg border border-[#2CD9C3] bg-transparent px-6 text-base font-bold text-[#2CD9C3] transition-transform hover:scale-105">
+                            <span class="truncate">Veranstaltungen</span>
+                        </a>
+                        <img alt="Barmenia Gothaer"
+                            class="h-12 w-auto flex-shrink-0 object-contain opacity-70 grayscale transition-all hover:grayscale-0 hover:opacity-100"
+                            src="./src/images/barmenia_gothaer.png" />
+                        <img alt="Markel"
+                            class="h-12 w-auto flex-shrink-0 object-contain opacity-70 grayscale transition-all hover:grayscale-0 hover:opacity-100"
+                            src="./src/images/markel.png" />
+                    </div>
+                    <div class="flex items-center justify-center gap-20 px-10">
+                        <img alt="Barmenia Gothaer"
+                            class="h-12 w-auto flex-shrink-0 object-contain opacity-70 grayscale transition-all hover:grayscale-0 hover:opacity-100"
+                            src="./src/images/barmenia_gothaer.png" />
+                        <img alt="Markel"
+                            class="h-12 w-auto flex-shrink-0 object-contain opacity-70 grayscale transition-all hover:grayscale-0 hover:opacity-100"
+                            src="./src/images/markel.png" />
+                    </div>
+                    <div class="flex items-center justify-center gap-20 px-10">
+                        <img alt="Barmenia Gothaer"
+                            class="h-12 w-auto flex-shrink-0 object-contain opacity-70 grayscale transition-all hover:grayscale-0 hover:opacity-100"
+                            src="./src/images/barmenia_gothaer.png" />
+                        <img alt="Markel"
+                            class="h-12 w-auto flex-shrink-0 object-contain opacity-70 grayscale transition-all hover:grayscale-0 hover:opacity-100"
+                            src="./src/images/markel.png" />
+                    </div>
+                    <div class="flex items-center justify-center gap-20 px-10">
+                        <img alt="Barmenia Gothaer"
+                            class="h-12 w-auto flex-shrink-0 object-contain opacity-70 grayscale transition-all hover:grayscale-0 hover:opacity-100"
+                            src="./src/images/barmenia_gothaer.png" />
+                        <img alt="Markel"
+                            class="h-12 w-auto flex-shrink-0 object-contain opacity-70 grayscale transition-all hover:grayscale-0 hover:opacity-100"
+                            src="./src/images/markel.png" />
+                    </div>
+                    <div class="flex items-center justify-center gap-20 px-10">
+                        <img alt="Barmenia Gothaer"
+                            class="h-12 w-auto flex-shrink-0 object-contain opacity-70 grayscale transition-all hover:grayscale-0 hover:opacity-100"
+                            src="./src/images/barmenia_gothaer.png" />
+                        <img alt="Markel"
+                            class="h-12 w-auto flex-shrink-0 object-contain opacity-70 grayscale transition-all hover:grayscale-0 hover:opacity-100"
+                            src="./src/images/markel.png" />
+                    </div>
+                    <div class="flex items-center justify-center gap-20 px-10">
+                        <img alt="Barmenia Gothaer"
+                            class="h-12 w-auto flex-shrink-0 object-contain opacity-70 grayscale transition-all hover:grayscale-0 hover:opacity-100"
+                            src="./src/images/barmenia_gothaer.png" />
+                        <img alt="Markel"
+                            class="h-12 w-auto flex-shrink-0 object-contain opacity-70 grayscale transition-all hover:grayscale-0 hover:opacity-100"
+                            src="./src/images/markel.png" />
+                    </div>
+                    <div class="flex items-center justify-center gap-20 px-10">
+                        <img alt="Barmenia Gothaer"
+                            class="h-12 w-auto flex-shrink-0 object-contain opacity-70 grayscale transition-all hover:grayscale-0 hover:opacity-100"
+                            src="./src/images/barmenia_gothaer.png" />
+                        <img alt="Markel"
+                            class="h-12 w-auto flex-shrink-0 object-contain opacity-70 grayscale transition-all hover:grayscale-0 hover:opacity-100"
+                            src="./src/images/markel.png" />
+                    </div>
+                    <div class="flex items-center justify-center gap-20 px-10">
+                        <img alt="Barmenia Gothaer"
+                            class="h-12 w-auto flex-shrink-0 object-contain opacity-70 grayscale transition-all hover:grayscale-0 hover:opacity-100"
+                            src="./src/images/barmenia_gothaer.png" />
+                        <img alt="Markel"
+                            class="h-12 w-auto flex-shrink-0 object-contain opacity-70 grayscale transition-all hover:grayscale-0 hover:opacity-100"
+                            src="./src/images/markel.png" />
+                    </div>
+                </div>
+    </div>
+    </div>
+    </section>
+
+    <section class="w-full bg-white dark:bg-background-dark py-20">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-black dark:text-white">Warum
+                mitmachen?</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center max-w-6xl mx-auto">
+                <div class="flex flex-col items-center gap-4 bg-[#F4F7F6] dark:bg-gray-800/50 p-8 rounded-xl">
+                    <div
+                        class="flex items-center justify-center w-16 h-16 bg-cyan-100/50 dark:bg-cyan-900/20 rounded-full text-[#2CD9C3]">
+                        <span class="material-symbols-outlined" style="font-size: 2.5rem;">groups</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-black dark:text-white">Echtes Networking</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Kein Smalltalk, echte Gespräche. Knüpfe
+                        wertvolle Kontakte zu Entscheidern und anderen Talenten.</p>
+                </div>
+                <div class="flex flex-col items-center gap-4 bg-[#F4F7F6] dark:bg-gray-800/50 p-8 rounded-xl">
+                    <div
+                        class="flex items-center justify-center w-16 h-16 bg-cyan-100/50 dark:bg-cyan-900/20 rounded-full text-[#2CD9C3]">
+                        <span class="material-symbols-outlined" style="font-size: 2.5rem;">lightbulb</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-black dark:text-white">Spannende Einblicke</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Tauche tief in innovative Themen der
+                        Versicherungsbranche ein und erhalte exklusive Perspektiven von Branchenexperten.</p>
+                </div>
+                <div class="flex flex-col items-center gap-4 bg-[#F4F7F6] dark:bg-gray-800/50 p-8 rounded-xl">
+                    <div
+                        class="flex items-center justify-center w-16 h-16 bg-cyan-100/50 dark:bg-cyan-900/20 rounded-full text-[#2CD9C3]">
+                        <span class="material-symbols-outlined" style="font-size: 2.5rem;">description</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-black dark:text-white">Zertifiziertes Engagement</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Erhalte nach Teilnahme an unseren Workshops ein
+                        offizielles Zertifikat, um dein extracurriculäres Engagement in deinem Lebenslauf
+                        sichtbar zu machen.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="w-full bg-[#F4F7F6] dark:bg-background-dark/50 py-20">
+        <div class="container mx-auto px-4">
+            <div class="text-center max-w-4xl mx-auto mb-16">
+                <h2 class="text-4xl md:text-5xl font-extrabold mb-6">
+                    Wir gestalten die <span
+                        class="bg-gradient-to-r from-[#2CD9C3] to-[#0E4B94] bg-clip-text text-transparent">Zukunft</span>
+                    der Versicherungsbranche.
+                </h2>
+                <p class="text-lg text-gray-600 dark:text-gray-300">
+                    Unsere Mission ist es, aufstrebende Talente mit führenden Fachleuten zu verbinden,
+                    Innovationen zu fördern und gemeinsam die Versicherung von morgen zu gestalten.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto mb-16">
+                <div>
+                    <h3 class="text-2xl font-bold mb-4 text-black dark:text-white">Vernetzung.</h3>
+                    <p class="text-base text-gray-600 dark:text-gray-400 leading-relaxed">
+                        Wir bringen junge Talente mit führenden Unternehmen, Expert:innen und der Wissenschaft
+                        zusammen. Durch exklusive Veranstaltungen, Netzwerktreffen und Partnerschaften entstehen
+                        nachhaltige Kontakte und echte Chancen für die persönliche und berufliche Entwicklung.
+                        Unser Netzwerk ist der Schlüssel zu neuen Perspektiven und Karrierewegen.
+                    </p>
+                </div>
+                <div>
+                    <h3 class="text-2xl font-bold mb-4 text-black dark:text-white">Förderung.</h3>
+                    <p class="text-base text-gray-600 dark:text-gray-400 leading-relaxed">
+                        Wir unterstützen Studierende und Young Professionals durch praxisnahe Formate, Workshops
+                        und individuelle Angebote zur Weiterbildung. Unser Ziel ist es, Talente frühzeitig zu
+                        begleiten, ihre Potenziale zu entfalten und ihnen Zugang zu wertvollen Ressourcen und
+                        Insights der Branche zu bieten. Wir fördern die nächste Generation – engagiert,
+                        unabhängig und auf Augenhöhe.
+                    </p>
+                </div>
+                <div>
+                    <h3 class="text-2xl font-bold mb-4 text-black dark:text-white">Zukunft.</h3>
+                    <p class="text-base text-gray-600 dark:text-gray-400 leading-relaxed">
+                        Wir begleiten junge Talente auf ihrem Weg in eine sich wandelnde Versicherungswelt.
+                        Gemeinsam mit Unternehmen und Hochschulen gestalten wir Innovationen, treiben den
+                        Austausch von Wissen voran und machen die Branche fit für morgen. Unsere Mission:
+                        Zukunft denken, Zukunft gestalten – gemeinsam mit der nächsten Generation.
+                    </p>
+                </div>
+            </div>
+
+            <div class="max-w-6xl mx-auto mb-16">
+                <h3 class="text-3xl font-bold mb-6 text-black dark:text-white">NextGen Insurance Forum e.V.</h3>
+                <p class="text-base text-gray-600 dark:text-gray-400 leading-relaxed">
+                    Das NextGen Insurance Forum e.V. ist die unabhängige Plattform an der Schnittstelle von
+                    Studierenden, Versicherungswirtschaft und Versicherungswissenschaft. Der Verein fördert
+                    aktiv den Austausch zwischen Studierenden, der Versicherungspraxis und der Forschung. Mit
+                    verschiedenen Formaten wie Fachvorträgen, Weiterbildungsangeboten, Netzwerkveranstaltungen
+                    und der Bereitstellung von Ansprechpartnern schaffen wir Räume für Dialog, Inspiration und
+                    persönliche Entwicklung. So vernetzen wir die nächste Generation von Young Professionals mit
+                    den zentralen Akteuren der Versicherungsbranche, um Potenziale auszuschöpfen. Als
+                    gemeinnütziger Verein engagieren wir uns für einen offenen, partnerschaftlichen Austausch
+                    sowie die Förderung von Chancengerechtigkeit und Innovation.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-6xl mx-auto mb-12">
+                <div>
+                    <h3 class="text-2xl font-bold mb-4 text-black dark:text-white">Unsere Mission</h3>
+                    <p class="text-base text-gray-600 dark:text-gray-400 leading-relaxed">
+                        Wir verbinden Studierende und Unternehmen durch Fachvorträge und Netzwerkformate,
+                        schaffen Austausch, fördern Potenziale und inspirieren Innovation.
+                    </p>
+                </div>
+                <div>
+                    <h3 class="text-2xl font-bold mb-4 text-black dark:text-white">Unsere Vision</h3>
+                    <p class="text-base text-gray-600 dark:text-gray-400 leading-relaxed">
+                        Wir wollen als zentrale Plattform Studierende, Unternehmen und Wissenschaft
+                        zusammenzuführen und so aktiv an der Zukunftsgestaltung der Versicherungswirtschaft
+                        mitwirken.
+                    </p>
+                </div>
+            </div>
+
+            <div class="flex justify-center">
+                <a href="about.html"
+                    class="flex h-12 items-center justify-center rounded-lg bg-[#2CD9C3] hover:bg-[#2CD9C3]/90 px-8 text-base font-bold text-white transition-colors">
+                    Mehr erfahren
+                </a>
+            </div>
+        </div>
+    </section>
+    </main>
+
+    <footer class="w-full bg-gray-100 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 py-8">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4 max-w-6xl mx-auto">
+                <div class="text-gray-600 dark:text-gray-400 text-sm font-medium">
+                    © 2025 NextGen Insurance Forum e.V.
+                </div>
+                <div class="flex items-center gap-6">
+                    <a href="impressum.html"
+                        class="text-gray-600 dark:text-gray-400 hover:text-[#0E4B94] dark:hover:text-[#2CD9C3] text-sm transition-colors">Impressum</a>
+                    <a href="datenschutz.html"
+                        class="text-gray-600 dark:text-gray-400 hover:text-[#0E4B94] dark:hover:text-[#2CD9C3] text-sm transition-colors">Datenschutz</a>
+                </div>
+                <div class="flex items-center gap-4">
+                    <a href="mailto:info@nextgenforum.de"
+                        class="text-gray-600 dark:text-gray-400 hover:text-[#0E4B94] dark:hover:text-[#2CD9C3] transition-colors flex items-center"
+                        aria-label="Email">
+                        <span class="material-symbols-outlined" style="font-size: 1.5rem;">mail</span>
+                    </a>
+                    <a href="https://www.linkedin.com/company/nextgen-forum" target="_blank" rel="noopener noreferrer"
+                        class="text-gray-600 dark:text-gray-400 hover:text-[#0E4B94] dark:hover:text-[#2CD9C3] transition-colors flex items-center"
+                        aria-label="LinkedIn">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    </div>
+
+    <script>
+        document.querySelectorAll('.nav-link').forEach(link => {
+            let rafId = null;
+            link.addEventListener('mouseenter', (e) => {
+                const rect = link.getBoundingClientRect();
+                const x = ((e.clientX - rect.left) / rect.width) * 100;
+                const y = ((e.clientY - rect.top) / rect.height) * 100;
+                link.style.setProperty('--mouse-x', `${x}%`);
+                link.style.setProperty('--mouse-y', `${y}%`);
+            });
+            link.addEventListener('mousemove', (e) => {
+                if (rafId) return;
+                rafId = requestAnimationFrame(() => {
+                    const rect = link.getBoundingClientRect();
+                    const x = ((e.clientX - rect.left) / rect.width) * 100;
+                    const y = ((e.clientY - rect.top) / rect.height) * 100;
+                    link.style.setProperty('--mouse-x', `${x}%`);
+                    link.style.setProperty('--mouse-y', `${y}%`);
+                    rafId = null;
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
