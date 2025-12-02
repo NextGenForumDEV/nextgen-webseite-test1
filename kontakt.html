@@ -133,7 +133,7 @@
 
                         <div class="bg-[#F4F7F6] dark:bg-gray-800/50 rounded-xl p-8">
                             <h2 class="text-2xl font-bold text-black dark:text-white mb-6">Nachricht senden</h2>
-                            <form class="space-y-6">
+                            <form id="contact-form" class="space-y-6">
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div>
                                         <label for="name"
@@ -168,7 +168,65 @@
                                     class="w-full flex h-14 items-center justify-center rounded-lg bg-gradient-to-r from-[#0E4B94] to-[#2CD9C3] px-10 text-lg font-bold text-white transition-transform hover:scale-105 shadow-lg">
                                     Nachricht senden
                                 </button>
+                                <p id="form-status" class="text-center mt-4 hidden"></p>
                             </form>
+                            <script>
+                                document.getElementById('contact-form').addEventListener('submit', async function (e) {
+                                    e.preventDefault();
+
+                                    const form = this;
+                                    const submitButton = form.querySelector('button[type="submit"]');
+                                    const statusMessage = document.getElementById('form-status');
+                                    const originalButtonText = submitButton.innerText;
+
+                                    // Disable button and show loading state
+                                    submitButton.disabled = true;
+                                    submitButton.innerText = 'Sende...';
+                                    submitButton.classList.add('opacity-50', 'cursor-not-allowed');
+                                    statusMessage.classList.add('hidden');
+                                    statusMessage.className = 'text-center mt-4 hidden'; // Reset classes
+
+                                    const formData = {
+                                        name: document.getElementById('name').value,
+                                        email: document.getElementById('email').value,
+                                        subject: document.getElementById('subject').value,
+                                        message: document.getElementById('message').value
+                                    };
+
+                                    try {
+                                        const response = await fetch('/api/contact', {
+                                            method: 'POST',
+                                            headers: {
+                                                'Content-Type': 'application/json'
+                                            },
+                                            body: JSON.stringify(formData)
+                                        });
+
+                                        if (response.ok) {
+                                            // Success
+                                            statusMessage.innerText = 'Danke! Deine Nachricht ist raus.';
+                                            statusMessage.classList.remove('hidden');
+                                            statusMessage.classList.add('text-green-600', 'dark:text-green-400', 'font-medium');
+                                            form.reset();
+                                        } else {
+                                            // Server error
+                                            const data = await response.json();
+                                            throw new Error(data.error || 'Ein Fehler ist aufgetreten.');
+                                        }
+                                    } catch (error) {
+                                        // Network or other error
+                                        console.error('Error:', error);
+                                        statusMessage.innerText = 'Fehler beim Senden. Bitte versuche es später erneut.';
+                                        statusMessage.classList.remove('hidden');
+                                        statusMessage.classList.add('text-red-600', 'dark:text-red-400', 'font-medium');
+                                    } finally {
+                                        // Restore button state
+                                        submitButton.disabled = false;
+                                        submitButton.innerText = originalButtonText;
+                                        submitButton.classList.remove('opacity-50', 'cursor-not-allowed');
+                                    }
+                                });
+                            </script>
                         </div>
                     </div>
                 </div>

@@ -1,0 +1,8 @@
+{
+    "name": "nextgen-website",
+    "version": "1.0.0",
+    "description": "NextGen Insurance Forum Website",
+    "dependencies": {
+        "nodemailer": "^6.9.13"
+    }
+}
