@@ -1,6 +1,9 @@
 const nodemailer = require('nodemailer');
 
 module.exports = async (req, res) => {
+    console.log("DEBUG: SMTP_USER vorhanden?", !!process.env.SMTP_USER);
+    console.log("DEBUG: SMTP_PASS vorhanden?", !!process.env.SMTP_PASS);
+    console.log("DEBUG: User-Wert Start:", process.env.SMTP_USER ? process.env.SMTP_USER.substring(0, 3) : "Nichts");
     if (req.method !== 'POST') {
         return res.status(405).json({ error: 'Method not allowed' });
     }
