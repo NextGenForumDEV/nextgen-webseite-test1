@@ -34,6 +34,41 @@
             },
         }
     </script>
+    <style>
+        /* Success Animation Styles */
+        @keyframes scaleIn {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes drawCheck {
+            0% {
+                stroke-dasharray: 100;
+                stroke-dashoffset: 100;
+            }
+
+            100% {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        .animate-scale-in {
+            animation: scaleIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        .animate-draw-check {
+            stroke-dasharray: 100;
+            stroke-dashoffset: 100;
+            animation: drawCheck 0.6s 0.3s ease-in-out forwards;
+        }
+    </style>
     <script src="src/js/cookie-consent.js" defer></script>
 </head>
 
@@ -142,6 +177,14 @@
                                         required />
                                 </div>
 
+                                <div>
+                                    <label for="phone"
+                                        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Handynummer</label>
+                                    <input type="tel" id="phone" name="phone"
+                                        class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#2CD9C3] focus:border-transparent transition-all"
+                                        required />
+                                </div>
+
                                 <!-- File Uploads -->
                                 <div>
                                     <label for="cv"
@@ -207,6 +250,23 @@
                                 </button>
                                 <p id="form-status" class="text-center mt-4 hidden"></p>
                             </form>
+
+                            <!-- Success Message Container -->
+                            <div id="success-container"
+                                class="hidden flex-col items-center justify-center py-10 text-center">
+                                <div
+                                    class="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mb-6 border-4 border-green-200 animate-scale-in">
+                                    <svg class="w-12 h-12 text-green-600" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path class="animate-draw-check" stroke-linecap="round" stroke-linejoin="round"
+                                            stroke-width="3" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                </div>
+                                <h3 class="text-2xl font-bold text-green-600 dark:text-green-400 mb-2">Erfolgreich
+                                    gesendet!</h3>
+                                <p class="text-gray-600 dark:text-gray-300">Vielen Dank für deine Bewerbung. Wir melden
+                                    uns zeitnah bei dir.</p>
+                            </div>
 
                             <script>
                                 // File to Base64 Helper
@@ -292,6 +352,7 @@
                                             firstname: document.getElementById('firstname').value,
                                             lastname: document.getElementById('lastname').value,
                                             email: document.getElementById('email').value,
+                                            phone: document.getElementById('phone').value,
                                             cv: {
                                                 filename: cvFile.name,
                                                 content: await toBase64(cvFile)
@@ -316,11 +377,12 @@
                                         });
 
                                         if (response.ok) {
-                                            statusMessage.innerText = 'Erfolg! Deine Bewerbung wurde versendet.';
-                                            statusMessage.classList.remove('hidden');
-                                            statusMessage.classList.add('text-green-600', 'dark:text-green-400', 'font-medium');
+                                            // Show Success Animation
+                                            form.classList.add('hidden');
+                                            document.getElementById('success-container').classList.remove('hidden');
+                                            document.getElementById('success-container').classList.add('flex');
+
                                             form.reset();
-                                            form.classList.add('hidden'); // Hide form on success
                                         } else {
                                             const data = await response.json();
                                             throw new Error(data.error || 'Ein Fehler ist aufgetreten.');

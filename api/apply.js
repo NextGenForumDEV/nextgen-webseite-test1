@@ -10,13 +10,14 @@ module.exports = async (req, res) => {
         firstname,
         lastname,
         email,
+        phone,
         cv,
         transcript,
         agreements
     } = req.body;
 
     // Basic Validation
-    if (!program || !firstname || !lastname || !email || !cv || !transcript || !agreements) {
+    if (!program || !firstname || !lastname || !email || !phone || !cv || !transcript || !agreements) {
         return res.status(400).json({ error: 'Missing required fields' });
     }
 
@@ -58,6 +59,7 @@ Programm: ${program}
 Vorname: ${firstname}
 Nachname: ${lastname}
 E-Mail: ${email}
+Handynummer: ${phone}
 
 Zustimmungen:
 - Commitment Pflichtteilnahme: ${agreements.commitment ? 'JA' : 'NEIN'}
@@ -69,6 +71,7 @@ Zustimmungen:
         <p><strong>Programm:</strong> ${program}</p>
         <p><strong>Bewerber:</strong> ${firstname} ${lastname}</p>
         <p><strong>E-Mail:</strong> ${email}</p>
+        <p><strong>Handynummer:</strong> ${phone}</p>
         <br>
         <h4>Zustimmungen:</h4>
         <ul>
