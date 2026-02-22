@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const consent = localStorage.getItem('cookie_consent');
 
     if (consent === 'accepted') {
-        loadGoogleAds();
+        loadGoogleTracking();
     } else if (consent === 'declined') {
         // Do nothing, tracking declined
     } else {
@@ -12,12 +12,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-function loadGoogleAds() {
-    console.log("Consent erteilt: Google Ads Tracking wird geladen.");
+function loadGoogleTracking() {
+    console.log("Consent erteilt: Google Tracking (Ads & Analytics) wird geladen.");
 
-    // Google Tag Manager Script dynamisch einfügen
+    // Script laden (wir nutzen die G-ID als Source, das deckt beides ab)
     var script = document.createElement('script');
-    script.src = 'https://www.googletagmanager.com/gtag/js?id=AW-17579535705';
+    script.src = 'https://www.googletagmanager.com/gtag/js?id=G-ERPTH5KFD9';
     script.async = true;
     document.head.appendChild(script);
 
@@ -25,7 +25,12 @@ function loadGoogleAds() {
     window.dataLayer = window.dataLayer || [];
     function gtag() { dataLayer.push(arguments); }
     gtag('js', new Date());
+
+    // 1. Google Ads Config
     gtag('config', 'AW-17579535705');
+
+    // 2. Google Analytics Config (NEU)
+    gtag('config', 'G-ERPTH5KFD9');
 }
 
 function showCookieBanner() {
@@ -74,7 +79,7 @@ function showCookieBanner() {
     document.getElementById('cookie-accept').addEventListener('click', () => {
         localStorage.setItem('cookie_consent', 'accepted');
         banner.remove();
-        loadGoogleAds();
+        loadGoogleTracking();
     });
 
     document.getElementById('cookie-decline').addEventListener('click', () => {
