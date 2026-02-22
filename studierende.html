@@ -98,18 +98,27 @@
                         <p class="text-xl text-gray-600 dark:text-gray-300 max-w-2xl">
                             Exklusive Workshops, direktes Networking und echte Jobchancen.
                         </p>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-12 w-full max-w-4xl pt-8">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-12 w-full max-w-4xl pt-8" id="stats-section">
                             <div class="text-center">
-                                <p class="text-5xl font-extrabold text-[#0E4B94] dark:text-[#2CD9C3]">4</p>
-                                <p class="text-gray-600 dark:text-gray-400 mt-2">Workshops pro Semester</p>
+                                <div class="overflow-hidden h-[60px] flex justify-center items-center">
+                                    <p class="stat-number text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-[#0E4B94] to-[#2CD9C3] transform transition-transform duration-1000 ease-out translate-y-full"
+                                        data-target="4">0</p>
+                                </div>
+                                <p class="text-gray-600 dark:text-gray-400 mt-2 font-medium">Workshops pro Semester</p>
                             </div>
                             <div class="text-center">
-                                <p class="text-5xl font-extrabold text-[#0E4B94] dark:text-[#2CD9C3]">20</p>
-                                <p class="text-gray-600 dark:text-gray-400 mt-2">Verfügbare Plätze</p>
+                                <div class="overflow-hidden h-[60px] flex justify-center items-center">
+                                    <p class="stat-number text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-[#0E4B94] to-[#2CD9C3] transform transition-transform duration-1000 ease-out translate-y-full"
+                                        data-target="20">0</p>
+                                </div>
+                                <p class="text-gray-600 dark:text-gray-400 mt-2 font-medium">Verfügbare Plätze</p>
                             </div>
                             <div class="text-center">
-                                <p class="text-5xl font-extrabold text-[#0E4B94] dark:text-[#2CD9C3]">100%</p>
-                                <p class="text-gray-600 dark:text-gray-400 mt-2">Kostenlos</p>
+                                <div class="overflow-hidden h-[60px] flex justify-center items-center">
+                                    <p class="stat-number text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-[#0E4B94] to-[#2CD9C3] transform transition-transform duration-1000 ease-out translate-y-full"
+                                        data-target="100" data-suffix="%">0%</p>
+                                </div>
+                                <p class="text-gray-600 dark:text-gray-400 mt-2 font-medium">Kostenlos</p>
                             </div>
                         </div>
                         <a href="jetzt-bewerben.html"
@@ -357,6 +366,47 @@
                 });
             });
         });
+
+        // Counter Animation
+        const statsSection = document.getElementById('stats-section');
+        const statNumbers = document.querySelectorAll('.stat-number');
+        let animated = false;
+
+        const animateValue = (obj, start, end, duration) => {
+            let startTimestamp = null;
+            const suffix = obj.getAttribute('data-suffix') || '';
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                // Easing out cubic
+                const easeOut = 1 - Math.pow(1 - progress, 3);
+                obj.innerHTML = Math.floor(easeOut * (end - start) + start) + suffix;
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                }
+            };
+            window.requestAnimationFrame(step);
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !animated) {
+                    animated = true;
+                    statNumbers.forEach(num => {
+                        num.classList.remove('translate-y-full');
+                        num.classList.add('translate-y-0');
+                        const target = parseInt(num.getAttribute('data-target'));
+                        setTimeout(() => {
+                            animateValue(num, 0, target, 2000);
+                        }, 300); // slight delay after slide up
+                    });
+                }
+            });
+        }, { threshold: 0.5 });
+
+        if (statsSection) {
+            observer.observe(statsSection);
+        }
     </script>
 </body>
 
