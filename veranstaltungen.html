@@ -49,7 +49,22 @@
                         </a>
                     </div>
                     <nav class="hidden items-center gap-8 text-sm font-medium lg:flex">
-                        <a class="nav-link" href="studierende.html">Für Studierende</a>
+                        <div class="relative group">
+                            <a class="nav-link flex items-center gap-1" href="studierende.html">
+                                Für Studierende
+                                <span class="material-symbols-outlined text-lg transition-transform duration-300 group-hover:rotate-180">expand_more</span>
+                            </a>
+                            <div class="absolute right-0 top-full hidden pt-2 group-hover:block transition-all duration-300 w-64">
+                                <div class="bg-white dark:bg-[#111121] border border-gray-100 dark:border-gray-800 rounded-xl shadow-xl overflow-hidden py-2 backdrop-blur-md">
+                                    <a href="studierende.html" class="block px-6 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-[#F4F7F6] dark:hover:bg-gray-800 hover:text-[#0E4B94] dark:hover:text-[#2CD9C3] transition-colors">
+                                        Future Talents Program
+                                    </a>
+                                    <a href="karriere.html" class="block px-6 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-[#F4F7F6] dark:hover:bg-gray-800 hover:text-[#0E4B94] dark:hover:text-[#2CD9C3] transition-colors">
+                                        Jobs & Karriere
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                         <a class="nav-link" href="unternehmen.html">Für Unternehmen</a>
                         <a class="nav-link nav-link-active" href="veranstaltungen.html">Veranstaltungen</a>
                         <a class="nav-link" href="uber-uns.html">Über uns</a>
@@ -64,12 +79,19 @@
             <div id="mobile-menu"
                 class="hidden lg:hidden absolute top-20 left-0 w-full bg-white dark:bg-[#111121] border-b border-gray-200 dark:border-gray-800 shadow-lg">
                 <div class="flex flex-col p-4 space-y-4">
-                    <a class="text-gray-700 dark:text-gray-300 hover:text-[#0E4B94] dark:hover:text-[#2CD9C3]"
-                        href="studierende.html">Für Studierende</a>
-                    <a class="text-gray-700 dark:text-gray-300 hover:text-[#0E4B94] dark:hover:text-[#2CD9C3]"
-                        href="unternehmen.html">Für Unternehmen</a>
-                    <a class="text-[#0E4B94] dark:text-[#2CD9C3] font-bold"
-                        href="veranstaltungen.html">Veranstaltungen</a>
+                    <div class="flex flex-col space-y-1">
+                        <button onclick="document.getElementById('mobile-studierende-menu').classList.toggle('hidden'); this.querySelector('.arrow-icon').classList.toggle('rotate-180')" 
+                            class="flex items-center justify-between w-full text-gray-700 dark:text-gray-300 hover:text-[#0E4B94] dark:hover:text-[#2CD9C3] font-bold py-2">
+                            <span>Für Studierende</span>
+                            <span class="material-symbols-outlined transition-transform duration-300 arrow-icon">expand_more</span>
+                        </button>
+                        <div id="mobile-studierende-menu" class="hidden flex flex-col pl-4 space-y-2 border-l border-gray-100 dark:border-gray-800 ml-2">
+                            <a class="text-gray-600 dark:text-gray-400 py-2 text-sm hover:text-[#0E4B94] dark:hover:text-[#2CD9C3]" href="studierende.html">Future Talents Program</a>
+                            <a class="text-gray-600 dark:text-gray-400 py-2 text-sm hover:text-[#0E4B94] dark:hover:text-[#2CD9C3]" href="karriere.html">Jobs & Karriere</a>
+                        </div>
+                    </div>
+                    <a class="text-gray-700 dark:text-gray-300 hover:text-[#0E4B94] dark:hover:text-[#2CD9C3] py-2 font-bold" href="unternehmen.html">Für Unternehmen</a>
+                    <a class="text-[#0E4B94] dark:text-[#2CD9C3] font-bold py-2" href="veranstaltungen.html">Veranstaltungen</a>
                     <a class="text-gray-700 dark:text-gray-300 hover:text-[#0E4B94] dark:hover:text-[#2CD9C3]"
                         href="uber-uns.html">Über uns</a>
                     <a class="text-gray-700 dark:text-gray-300 hover:text-[#0E4B94] dark:hover:text-[#2CD9C3]"
