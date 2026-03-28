@@ -79,28 +79,29 @@
             </div>
             <div id="mobile-menu"
                 class="hidden lg:hidden absolute top-20 left-0 w-full bg-white dark:bg-[#111121] border-b border-gray-200 dark:border-gray-800 shadow-lg">
-                <div class="flex flex-col p-4 space-y-4">
-                    <div class="flex flex-col space-y-1">
-                        <button onclick="document.getElementById('mobile-studierende-menu').classList.toggle('hidden'); this.querySelector('.arrow-icon').classList.toggle('rotate-180')" 
-                            class="flex items-center justify-between w-full text-gray-700 dark:text-gray-300 hover:text-[#0E4B94] dark:hover:text-[#2CD9C3] font-bold py-2">
+                <div class="flex flex-col p-3">
+                    <div class="flex flex-col">
+                        <button onclick="const m = document.getElementById('mobile-studierende-menu'); m.classList.toggle('grid-rows-[0fr]'); m.classList.toggle('grid-rows-[1fr]'); this.querySelector('.arrow-icon').classList.toggle('rotate-180')" 
+                            class="flex items-center justify-between w-full text-gray-700 dark:text-gray-300 hover:text-[#0E4B94] dark:hover:text-[#2CD9C3] font-bold py-3 transition-colors no-underline hover:no-underline">
                             <span>Für Studierende</span>
                             <span class="material-symbols-outlined transition-transform duration-300 arrow-icon">expand_more</span>
                         </button>
-                        <div id="mobile-studierende-menu" class="hidden flex flex-col pl-4 space-y-2 border-l border-gray-100 dark:border-gray-800 ml-2">
-                            <a class="text-gray-600 dark:text-gray-400 py-2 text-sm hover:text-[#0E4B94] dark:hover:text-[#2CD9C3]" href="studierende.html">Future Talents Program</a>
-                            <a class="text-gray-600 dark:text-gray-400 py-2 text-sm hover:text-[#0E4B94] dark:hover:text-[#2CD9C3]" href="karriere.html">Jobs & Karriere</a>
+                        <div id="mobile-studierende-menu" class="grid grid-rows-[0fr] overflow-hidden transition-[grid-template-rows] duration-300 ease-in-out">
+                            <div class="min-h-0 flex flex-col pl-4 space-y-2 border-l border-gray-100 dark:border-gray-800 ml-2">
+                                <a class="text-gray-600 dark:text-gray-400 py-2 text-sm hover:text-[#0E4B94] dark:hover:text-[#2CD9C3] transition-colors no-underline hover:no-underline" href="studierende.html">Future Talents Program</a>
+                                <a class="text-gray-600 dark:text-gray-400 py-2 text-sm hover:text-[#0E4B94] dark:hover:text-[#2CD9C3] transition-colors no-underline hover:no-underline" href="karriere.html">Jobs & Karriere</a>
+                            </div>
                         </div>
                     </div>
-                    <a class="text-gray-700 dark:text-gray-300 hover:text-[#0E4B94] dark:hover:text-[#2CD9C3] py-2 font-bold" href="unternehmen.html">Für Unternehmen</a>
-                    <a class="text-gray-700 dark:text-gray-300 hover:text-[#0E4B94] dark:hover:text-[#2CD9C3] py-2 font-bold" href="veranstaltungen.html">Veranstaltungen</a>
-                    <a class="text-[#0E4B94] dark:text-[#2CD9C3] font-bold py-2" href="uber-uns.html">Über uns</a>
-                    <a class="text-gray-700 dark:text-gray-300 hover:text-[#0E4B94] dark:hover:text-[#2CD9C3]"
-                        href="kontakt.html">Kontakt</a>
+                    <a class="flex items-center w-full text-gray-700 dark:text-gray-300 hover:text-[#0E4B94] dark:hover:text-[#2CD9C3] font-bold py-3 transition-colors no-underline hover:no-underline" href="unternehmen.html">Für Unternehmen</a>
+                    <a class="flex items-center w-full text-gray-700 dark:text-gray-300 hover:text-[#0E4B94] dark:hover:text-[#2CD9C3] font-bold py-3 transition-colors no-underline hover:no-underline" href="veranstaltungen.html">Veranstaltungen</a>
+                    <a class="flex items-center w-full text-[#0E4B94] dark:text-[#2CD9C3] font-bold py-3 transition-colors no-underline hover:no-underline" href="uber-uns.html">Über uns</a>
+                    <a class="flex items-center w-full text-gray-700 dark:text-gray-300 hover:text-[#0E4B94] dark:hover:text-[#2CD9C3] font-bold py-3 transition-colors no-underline hover:no-underline" href="kontakt.html">Kontakt</a>
                 </div>
             </div>
         </header>
 
-        <main class="flex-1 pt-20">
+        <main class="flex-1">
             <section class="relative w-full bg-gradient-to-br from-[#0E4B94]/5 to-[#2CD9C3]/5 py-20">
                 <div class="container mx-auto px-4">
                     <div class="flex flex-col items-center text-center gap-8">

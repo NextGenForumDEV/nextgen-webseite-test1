@@ -29,6 +29,13 @@
         -webkit-text-fill-color: currentColor !important;
     }
 
+    /* Global Material Symbols Fix for visibility */
+    .material-symbols-outlined {
+        -webkit-text-fill-color: currentColor !important;
+        display: inline-block;
+        vertical-align: middle;
+    }
+
     .nav-link::after {
         content: '';
         @apply absolute left-0 bottom-0 w-0 h-0.5 bg-gradient-to-r from-[#0E4B94] to-[#2CD9C3] transition-all duration-300;
@@ -45,6 +52,14 @@
 
     .nav-link-active::after {
         @apply w-full;
+    }
+
+    #mobile-menu a, #mobile-menu button {
+        text-decoration: none !important;
+    }
+
+    #mobile-menu a::after, #mobile-menu button::after {
+        display: none !important;
     }
 
     .hero-btn {
