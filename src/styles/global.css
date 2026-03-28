@@ -25,6 +25,10 @@
         transition: font-weight 0.2s ease, background-position 0.15s ease-out;
     }
 
+    .nav-link:hover .material-symbols-outlined {
+        -webkit-text-fill-color: currentColor !important;
+    }
+
     .nav-link::after {
         content: '';
         @apply absolute left-0 bottom-0 w-0 h-0.5 bg-gradient-to-r from-[#0E4B94] to-[#2CD9C3] transition-all duration-300;
