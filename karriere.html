@@ -2,6 +2,15 @@
 <html class="light" lang="de">
 
 <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17579535705"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'AW-17579535705');
+    </script>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>Jobs & Karriere | NextGen Insurance Forum e.V.</title>
@@ -12,8 +21,11 @@
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&amp;display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet" />
-    <link href="./src/styles/global.css" rel="stylesheet" /><script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap"
+        rel="stylesheet" />
+    <link href="./src/styles/global.css" rel="stylesheet" />
+    <script>
         tailwind.config = {
             darkMode: "class",
             theme: {
@@ -32,14 +44,213 @@
         }
     </script>
     <style>
-        @keyframes scaleIn { 0% { transform: scale(0); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
-        @keyframes drawCheck { 0% { stroke-dasharray: 100; stroke-dashoffset: 100; } 100% { stroke-dashoffset: 0; } }
-        .animate-scale-in { animation: scaleIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
-        .animate-draw-check { stroke-dasharray: 100; stroke-dashoffset: 100; animation: drawCheck 0.6s 0.3s ease-in-out forwards; }
+        @keyframes scaleIn {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes drawCheck {
+            0% {
+                stroke-dasharray: 100;
+                stroke-dashoffset: 100;
+            }
+
+            100% {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        .animate-scale-in {
+            animation: scaleIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        .animate-draw-check {
+            stroke-dasharray: 100;
+            stroke-dashoffset: 100;
+            animation: drawCheck 0.6s 0.3s ease-in-out forwards;
+        }
     </style>
     <script src="src/js/cookie-consent.js" defer></script>
     <script src="src/js/scroll-animations.js" defer></script>
 </head>
 
 <body class="font-display bg-background-light dark:bg-background-dark text-[#0e0e1b] dark:text-gray-200">
-    <div class="relative flex min-h-screen w-full flex-col"><header id="main-header" class="fixed top-0 z-50 w-full glass-header transition-all duration-300 bg-white/90 backdrop-blur-md shadow-sm dark:bg-background-dark/90"><div class="container mx-auto px-4"><div class="flex h-20 items-center justify-between max-w-6xl mx-auto"><div class="flex items-center gap-4"><a href="index.html" class="flex items-center"><img src="./src/images/logo.png" alt="NextGen Logo" class="h-14 w-auto object-contain" /></a></div><nav class="hidden items-center gap-8 text-sm font-medium lg:flex"><div class="relative group"><a class="nav-link nav-link-active flex items-center gap-1" href="studierende.html">Für Studierende<span class="material-symbols-outlined text-lg transition-transform duration-300 group-hover:rotate-180">expand_more</span></a><div class="absolute right-0 top-full hidden pt-2 group-hover:block transition-all duration-300 w-64"><div class="bg-white dark:bg-[#111121] border border-gray-100 dark:border-gray-800 rounded-xl shadow-xl overflow-hidden py-2 backdrop-blur-md"><a href="studierende.html" class="block px-6 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-[#F4F7F6] dark:hover:bg-gray-800 hover:text-[#0E4B94] dark:hover:text-[#2CD9C3] transition-colors">Future Talents Program</a><a href="karriere.html" class="block px-6 py-3 text-sm text-[#0E4B94] dark:text-[#2CD9C3] bg-[#F4F7F6] dark:bg-gray-800 font-medium">Jobs & Karriere</a></div></div></div><a class="nav-link" href="unternehmen.html">Für Unternehmen</a><a class="nav-link" href="veranstaltungen.html">Veranstaltungen</a><a class="nav-link" href="uber-uns.html">Über uns</a><a class="nav-link" href="kontakt.html">Kontakt</a></nav><button class="lg:hidden p-2 text-gray-600 dark:text-gray-300" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')"><span class="material-symbols-outlined">menu</span></button></div></div><div id="mobile-menu" class="hidden lg:hidden absolute top-20 left-0 w-full bg-white dark:bg-[#111121] border-b border-gray-200 dark:border-gray-800 shadow-lg"><div class="flex flex-col p-3"><div class="flex flex-col"><button onclick="const m = document.getElementById('mobile-studierende-menu'); m.classList.toggle('grid-rows-[0fr]'); m.classList.toggle('grid-rows-[1fr]'); this.querySelector('.arrow-icon').classList.toggle('rotate-180')"class="flex items-center justify-between w-full text-[#0E4B94] dark:text-[#2CD9C3] font-bold py-3 transition-colors no-underline hover:no-underline"><span>Für Studierende</span><span class="material-symbols-outlined transition-transform duration-300 arrow-icon rotate-180">expand_more</span></button><div id="mobile-studierende-menu" class="grid grid-rows-[1fr] overflow-hidden transition-[grid-template-rows] duration-300 ease-in-out"><div class="min-h-0 flex flex-col pl-4 space-y-2 border-l border-gray-100 dark:border-gray-800 ml-2"><a class="text-gray-600 dark:text-gray-400 py-2 text-sm hover:text-[#0E4B94] dark:hover:text-[#2CD9C3] transition-colors no-underline hover:no-underline" href="studierende.html">Future Talents Program</a><a class="text-[#0E4B94] dark:text-[#2CD9C3] py-2 text-sm font-bold transition-colors no-underline hover:no-underline" href="karriere.html">Jobs & Karriere</a></div></div></div><a class="flex items-center w-full text-gray-700 dark:text-gray-300 hover:text-[#0E4B94] dark:hover:text-[#2CD9C3] font-bold py-3 transition-colors no-underline hover:no-underline" href="unternehmen.html">Für Unternehmen</a><a class="flex items-center w-full text-gray-700 dark:text-gray-300 hover:text-[#0E4B94] dark:hover:text-[#2CD9C3] font-bold py-3 transition-colors no-underline hover:no-underline" href="veranstaltungen.html">Veranstaltungen</a><a class="flex items-center w-full text-gray-700 dark:text-gray-300 hover:text-[#0E4B94] dark:hover:text-[#2CD9C3] font-bold py-3 transition-colors no-underline hover:no-underline" href="uber-uns.html">Über uns</a><a class="flex items-center w-full text-gray-700 dark:text-gray-300 hover:text-[#0E4B94] dark:hover:text-[#2CD9C3] font-bold py-3 transition-colors no-underline hover:no-underline" href="kontakt.html">Kontakt</a></div></div></header><main class="flex-1 pt-20"><section class="relative w-full overflow-hidden pt-16 pb-16"><div class="absolute inset-0 z-0 pointer-events-none"><div class="absolute -top-[20%] -left-[10%] w-[800px] h-[800px] bg-gradient-to-br from-[#2CD9C3]/20 to-[#0E4B94]/20 rounded-full blur-3xl opacity-60"></div></div><div class="container mx-auto px-4 relative z-10"><div class="flex flex-col items-center text-center gap-8"><h1 class="text-3xl md:text-6xl font-extrabold leading-tight tracking-tight max-w-4xl">Deine Bühne für die <br /><span class="bg-gradient-to-r from-[#2CD9C3] to-[#0E4B94] bg-clip-text text-transparent">Versicherungswelt</span>.</h1><p class="text-xl text-gray-600 dark:text-gray-300 max-w-2xl text-center">Wir bringen dich mit den Top-Arbeitgebern der Branche zusammen. Entdecke exklusive Möglichkeiten und gestalte deine berufliche Zukunft von Anfang an.</p></div></div></section><section class="w-full bg-[#F4F7F6] dark:bg-background-dark/50 py-20"><div class="container mx-auto px-4"><div class="max-w-4xl mx-auto bg-white dark:bg-gray-800/50 rounded-2xl shadow-xl overflow-hidden flex flex-col md:flex-row border border-gray-100 dark:border-gray-700"><div class="md:w-1/2 p-8 md:p-12 flex flex-col justify-center bg-gradient-to-br from-[#0E4B94] to-[#0a356b] text-white"><h2 class="text-3xl font-bold mb-4">Nichts mehr verpassen!</h2><p class="text-white/80 mb-6">Melde dich für unser monatliches Karriere-Update an. Wir schicken dir einmal im Monat die spannendsten Jobs, Tools und Insights direkt in dein Postfach.</p><ul class="space-y-3"><li class="flex items-center gap-3"><span class="material-symbols-outlined text-[#2CD9C3]">check_circle</span><span>Exklusive Praktika & Werkstudentenjobs</span></li><li class="flex items-center gap-3"><span class="material-symbols-outlined text-[#2CD9C3]">check_circle</span><span>Einladungen zu Recruiting-Events</span></li><li class="flex items-center gap-3"><span class="material-symbols-outlined text-[#2CD9C3]">check_circle</span><span>Insights von Branchen-Experten</span></li></ul></div><div class="md:w-1/2 p-8 md:p-12"><form id="newsletter-form" action="https://a18eff66.sibforms.com/serve/MUIFAARPCz-lSPsTJwnM2E8cs9QzuhZSddXy6x1lsur7KvzNUSsLqcVV6sfgcIddBg--OcmEl2tJXD7PVyqJHecNLnNA5pYpCRRb8RSSwf7u_ZYd4I2z1BDdhmsQMtRFkuyCNEv3Fdo3GZFeMuYFHN8yrsHeoj9xgf_Gk5C_LzvKWBdx2lamCwV0tIO1yxcnznq8NZEs-dl1o5vgiQ==" method="POST" class="space-y-6"><div><label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Dein Vorname</label><input type="text" id="name" name="VORNAME" required class="w-full px-4 h-12 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2CD9C3] dark:text-white transition-all"></div><div><label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">E-Mail-Adresse</label><input type="email" id="email" name="EMAIL" required class="w-full px-4 h-12 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2CD9C3] dark:text-white transition-all"></div><input type="text" name="email_address_check" value="" style="display:none;" tabindex="-1" autocomplete="off"><input type="hidden" name="locale" value="de"><div class="pt-4"><button type="submit" class="w-full h-14 bg-gradient-to-r from-[#0E4B94] to-[#2CD9C3] text-white font-bold rounded-lg hover:scale-[1.02] transition-transform shadow-lg">Für Updates anmelden</button></div><p class="text-xs text-center text-gray-400">Abmeldung jederzeit möglich. Deine Daten sind bei uns sicher.</p></form><div id="success-container-newsletter" class="hidden flex-col items-center justify-center text-center py-6"><div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4 border-4 border-green-200 animate-scale-in"><svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path class="animate-draw-check" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg></div><h3 class="text-xl font-bold text-green-600 dark:text-green-400 mb-2">Fast geschafft!</h3><p class="text-gray-600 dark:text-gray-300">Wir haben dir eine E-Mail zur Bestätigung geschickt. Bitte klicke auf den Link in der E-Mail, um deine Anmeldung abzuschließen.</p></div><script>const newsletterForm = document.getElementById('newsletter-form');const newsletterSuccess = document.getElementById('success-container-newsletter');newsletterForm.addEventListener('submit', async function (e) {e.preventDefault();const submitBtn = newsletterForm.querySelector('button[type="submit"]');const originalText = submitBtn.innerText;submitBtn.disabled = true;submitBtn.innerText = 'Wird angemeldet...';submitBtn.classList.add('opacity-50', 'cursor-not-allowed');const formData = new FormData(newsletterForm);try {await fetch(newsletterForm.action, {method: 'POST',body: formData,mode: 'no-cors'});newsletterForm.classList.add('hidden');newsletterSuccess.classList.remove('hidden');newsletterSuccess.classList.add('flex');newsletterForm.reset();}catch (error) {console.error('Newsletter error:', error);alert('Fehler bei der Anmeldung. Bitte versuche es später.');}finally {submitBtn.disabled = false;submitBtn.innerText = originalText;submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');}});</script></div></div></div></section></main><footer class="w-full bg-gray-100 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 py-8"><div class="container mx-auto px-4"><div class="flex flex-col md:flex-row items-center justify-between gap-4 max-w-6xl mx-auto"><div class="text-gray-600 dark:text-gray-400 text-sm font-medium">© 2026 NextGen Insurance Forum e.V.</div><div class="flex items-center gap-6"><a href="impressum.html" class="text-gray-600 dark:text-gray-400 hover:text-[#0E4B94] dark:hover:text-[#2CD9C3] text-sm transition-colors">Impressum</a><a href="datenschutzerklarung.html" class="text-gray-600 dark:text-gray-400 hover:text-[#0E4B94] dark:hover:text-[#2CD9C3] text-sm transition-colors">Datenschutz</a></div><div class="flex items-center gap-4"><a href="mailto:info@nextgenforum.de" class="text-gray-600 dark:text-gray-400 hover:text-[#0E4B94] dark:hover:text-[#2CD9C3] transition-colors flex items-center" aria-label="Email"><span class="material-symbols-outlined" style="font-size: 1.5rem;">mail</span></a><a href="https://www.linkedin.com/company/nextgen-forum" target="_blank" rel="noopener noreferrer" class="text-gray-600 dark:text-gray-400 hover:text-[#0E4B94] dark:hover:text-[#2CD9C3] transition-colors flex items-center" aria-label="LinkedIn"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"></path></svg></a></div></div></div></footer></div></body></html>
+    <div class="relative flex min-h-screen w-full flex-col">
+        <header id="main-header"
+            class="fixed top-0 z-50 w-full glass-header transition-all duration-300 bg-white/90 backdrop-blur-md shadow-sm dark:bg-background-dark/90">
+            <div class="container mx-auto px-4">
+                <div class="flex h-20 items-center justify-between max-w-6xl mx-auto">
+                    <div class="flex items-center gap-4"><a href="index.html" class="flex items-center"><img
+                                src="./src/images/logo.png" alt="NextGen Logo" class="h-14 w-auto object-contain" /></a>
+                    </div>
+                    <nav class="hidden items-center gap-8 text-sm font-medium lg:flex">
+                        <div class="relative group"><a class="nav-link nav-link-active flex items-center gap-1"
+                                href="studierende.html">Für Studierende<span
+                                    class="material-symbols-outlined text-lg transition-transform duration-300 group-hover:rotate-180">expand_more</span></a>
+                            <div
+                                class="absolute right-0 top-full hidden pt-2 group-hover:block transition-all duration-300 w-64">
+                                <div
+                                    class="bg-white dark:bg-[#111121] border border-gray-100 dark:border-gray-800 rounded-xl shadow-xl overflow-hidden py-2 backdrop-blur-md">
+                                    <a href="studierende.html"
+                                        class="block px-6 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-[#F4F7F6] dark:hover:bg-gray-800 hover:text-[#0E4B94] dark:hover:text-[#2CD9C3] transition-colors">Future
+                                        Talents Program</a><a href="karriere.html"
+                                        class="block px-6 py-3 text-sm text-[#0E4B94] dark:text-[#2CD9C3] bg-[#F4F7F6] dark:bg-gray-800 font-medium">Jobs
+                                        & Karriere</a></div>
+                            </div>
+                        </div><a class="nav-link" href="unternehmen.html">Für Unternehmen</a><a class="nav-link"
+                            href="veranstaltungen.html">Veranstaltungen</a><a class="nav-link" href="uber-uns.html">Über
+                            uns</a><a class="nav-link" href="kontakt.html">Kontakt</a>
+                    </nav><button class="lg:hidden p-2 text-gray-600 dark:text-gray-300"
+                        onclick="document.getElementById('mobile-menu').classList.toggle('hidden')"><span
+                            class="material-symbols-outlined">menu</span></button>
+                </div>
+            </div>
+            <div id="mobile-menu"
+                class="hidden lg:hidden absolute top-20 left-0 w-full bg-white dark:bg-[#111121] border-b border-gray-200 dark:border-gray-800 shadow-lg">
+                <div class="flex flex-col p-3">
+                    <div class="flex flex-col"><button
+                            onclick="const m = document.getElementById('mobile-studierende-menu'); m.classList.toggle('grid-rows-[0fr]'); m.classList.toggle('grid-rows-[1fr]'); this.querySelector('.arrow-icon').classList.toggle('rotate-180')"
+                            class="flex items-center justify-between w-full text-[#0E4B94] dark:text-[#2CD9C3] font-bold py-3 transition-colors no-underline hover:no-underline"><span>Für
+                                Studierende</span><span
+                                class="material-symbols-outlined transition-transform duration-300 arrow-icon rotate-180">expand_more</span></button>
+                        <div id="mobile-studierende-menu"
+                            class="grid grid-rows-[1fr] overflow-hidden transition-[grid-template-rows] duration-300 ease-in-out">
+                            <div
+                                class="min-h-0 flex flex-col pl-4 space-y-2 border-l border-gray-100 dark:border-gray-800 ml-2">
+                                <a class="text-gray-600 dark:text-gray-400 py-2 text-sm hover:text-[#0E4B94] dark:hover:text-[#2CD9C3] transition-colors no-underline hover:no-underline"
+                                    href="studierende.html">Future Talents Program</a><a
+                                    class="text-[#0E4B94] dark:text-[#2CD9C3] py-2 text-sm font-bold transition-colors no-underline hover:no-underline"
+                                    href="karriere.html">Jobs & Karriere</a></div>
+                        </div>
+                    </div><a
+                        class="flex items-center w-full text-gray-700 dark:text-gray-300 hover:text-[#0E4B94] dark:hover:text-[#2CD9C3] font-bold py-3 transition-colors no-underline hover:no-underline"
+                        href="unternehmen.html">Für Unternehmen</a><a
+                        class="flex items-center w-full text-gray-700 dark:text-gray-300 hover:text-[#0E4B94] dark:hover:text-[#2CD9C3] font-bold py-3 transition-colors no-underline hover:no-underline"
+                        href="veranstaltungen.html">Veranstaltungen</a><a
+                        class="flex items-center w-full text-gray-700 dark:text-gray-300 hover:text-[#0E4B94] dark:hover:text-[#2CD9C3] font-bold py-3 transition-colors no-underline hover:no-underline"
+                        href="uber-uns.html">Über uns</a><a
+                        class="flex items-center w-full text-gray-700 dark:text-gray-300 hover:text-[#0E4B94] dark:hover:text-[#2CD9C3] font-bold py-3 transition-colors no-underline hover:no-underline"
+                        href="kontakt.html">Kontakt</a>
+                </div>
+            </div>
+        </header>
+        <main class="flex-1 pt-20">
+            <section class="relative w-full overflow-hidden pt-16 pb-16">
+                <div class="absolute inset-0 z-0 pointer-events-none">
+                    <div
+                        class="absolute -top-[20%] -left-[10%] w-[800px] h-[800px] bg-gradient-to-br from-[#2CD9C3]/20 to-[#0E4B94]/20 rounded-full blur-3xl opacity-60">
+                    </div>
+                </div>
+                <div class="container mx-auto px-4 relative z-10">
+                    <div class="flex flex-col items-center text-center gap-8">
+                        <h1 class="text-3xl md:text-6xl font-extrabold leading-tight tracking-tight max-w-4xl">Deine
+                            Bühne für die <br /><span
+                                class="bg-gradient-to-r from-[#2CD9C3] to-[#0E4B94] bg-clip-text text-transparent">Versicherungswelt</span>.
+                        </h1>
+                        <p class="text-xl text-gray-600 dark:text-gray-300 max-w-2xl text-center">Wir bringen dich mit
+                            den Top-Arbeitgebern der Branche zusammen. Entdecke exklusive Möglichkeiten und gestalte
+                            deine berufliche Zukunft von Anfang an.</p>
+                    </div>
+                </div>
+            </section>
+            <section class="w-full bg-[#F4F7F6] dark:bg-background-dark/50 py-20">
+                <div class="container mx-auto px-4">
+                    <div
+                        class="max-w-4xl mx-auto bg-white dark:bg-gray-800/50 rounded-2xl shadow-xl overflow-hidden flex flex-col md:flex-row border border-gray-100 dark:border-gray-700">
+                        <div
+                            class="md:w-1/2 p-8 md:p-12 flex flex-col justify-center bg-gradient-to-br from-[#0E4B94] to-[#0a356b] text-white">
+                            <h2 class="text-3xl font-bold mb-4">Nichts mehr verpassen!</h2>
+                            <p class="text-white/80 mb-6">Melde dich für unser monatliches Karriere-Update an. Wir
+                                schicken dir einmal im Monat die spannendsten Jobs, Tools und Insights direkt in dein
+                                Postfach.</p>
+                            <ul class="space-y-3">
+                                <li class="flex items-center gap-3"><span
+                                        class="material-symbols-outlined text-[#2CD9C3]">check_circle</span><span>Exklusive
+                                        Praktika & Werkstudentenjobs</span></li>
+                                <li class="flex items-center gap-3"><span
+                                        class="material-symbols-outlined text-[#2CD9C3]">check_circle</span><span>Einladungen
+                                        zu Recruiting-Events</span></li>
+                                <li class="flex items-center gap-3"><span
+                                        class="material-symbols-outlined text-[#2CD9C3]">check_circle</span><span>Insights
+                                        von Branchen-Experten</span></li>
+                            </ul>
+                        </div>
+                        <div class="md:w-1/2 p-8 md:p-12">
+                            <form id="newsletter-form"
+                                action="https://a18eff66.sibforms.com/serve/MUIFAARPCz-lSPsTJwnM2E8cs9QzuhZSddXy6x1lsur7KvzNUSsLqcVV6sfgcIddBg--OcmEl2tJXD7PVyqJHecNLnNA5pYpCRRb8RSSwf7u_ZYd4I2z1BDdhmsQMtRFkuyCNEv3Fdo3GZFeMuYFHN8yrsHeoj9xgf_Gk5C_LzvKWBdx2lamCwV0tIO1yxcnznq8NZEs-dl1o5vgiQ=="
+                                method="POST" class="space-y-6">
+                                <div><label for="name"
+                                        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Dein
+                                        Vorname</label><input type="text" id="name" name="VORNAME" required
+                                        class="w-full px-4 h-12 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2CD9C3] dark:text-white transition-all">
+                                </div>
+                                <div><label for="email"
+                                        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">E-Mail-Adresse</label><input
+                                        type="email" id="email" name="EMAIL" required
+                                        class="w-full px-4 h-12 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2CD9C3] dark:text-white transition-all">
+                                </div><input type="text" name="email_address_check" value="" style="display:none;"
+                                    tabindex="-1" autocomplete="off"><input type="hidden" name="locale" value="de">
+                                <div class="pt-4"><button type="submit"
+                                        class="w-full h-14 bg-gradient-to-r from-[#0E4B94] to-[#2CD9C3] text-white font-bold rounded-lg hover:scale-[1.02] transition-transform shadow-lg">Für
+                                        Updates anmelden</button></div>
+                                <p class="text-xs text-center text-gray-400">Abmeldung jederzeit möglich. Deine Daten
+                                    sind bei uns sicher.</p>
+                            </form>
+                            <div id="success-container-newsletter"
+                                class="hidden flex-col items-center justify-center text-center py-6">
+                                <div
+                                    class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4 border-4 border-green-200 animate-scale-in">
+                                    <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path class="animate-draw-check" stroke-linecap="round" stroke-linejoin="round"
+                                            stroke-width="3" d="M5 13l4 4L19 7"></path>
+                                    </svg></div>
+                                <h3 class="text-xl font-bold text-green-600 dark:text-green-400 mb-2">Fast geschafft!
+                                </h3>
+                                <p class="text-gray-600 dark:text-gray-300">Wir haben dir eine E-Mail zur Bestätigung
+                                    geschickt. Bitte klicke auf den Link in der E-Mail, um deine Anmeldung
+                                    abzuschließen.</p>
+                            </div>
+                            <script>const newsletterForm = document.getElementById('newsletter-form'); const newsletterSuccess = document.getElementById('success-container-newsletter'); newsletterForm.addEventListener('submit', async function (e) { e.preventDefault(); const submitBtn = newsletterForm.querySelector('button[type="submit"]'); const originalText = submitBtn.innerText; submitBtn.disabled = true; submitBtn.innerText = 'Wird angemeldet...'; submitBtn.classList.add('opacity-50', 'cursor-not-allowed'); const formData = new FormData(newsletterForm); try { await fetch(newsletterForm.action, { method: 'POST', body: formData, mode: 'no-cors' }); newsletterForm.classList.add('hidden'); newsletterSuccess.classList.remove('hidden'); newsletterSuccess.classList.add('flex'); newsletterForm.reset(); } catch (error) { console.error('Newsletter error:', error); alert('Fehler bei der Anmeldung. Bitte versuche es später.'); } finally { submitBtn.disabled = false; submitBtn.innerText = originalText; submitBtn.classList.remove('opacity-50', 'cursor-not-allowed'); } });</script>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+        <footer class="w-full bg-gray-100 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 py-8">
+            <div class="container mx-auto px-4">
+                <div class="flex flex-col md:flex-row items-center justify-between gap-4 max-w-6xl mx-auto">
+                    <div class="text-gray-600 dark:text-gray-400 text-sm font-medium">© 2026 NextGen Insurance Forum
+                        e.V.</div>
+                    <div class="flex items-center gap-6"><a href="impressum.html"
+                            class="text-gray-600 dark:text-gray-400 hover:text-[#0E4B94] dark:hover:text-[#2CD9C3] text-sm transition-colors">Impressum</a><a
+                            href="datenschutzerklarung.html"
+                            class="text-gray-600 dark:text-gray-400 hover:text-[#0E4B94] dark:hover:text-[#2CD9C3] text-sm transition-colors">Datenschutz</a>
+                    </div>
+                    <div class="flex items-center gap-4"><a href="mailto:info@nextgenforum.de"
+                            class="text-gray-600 dark:text-gray-400 hover:text-[#0E4B94] dark:hover:text-[#2CD9C3] transition-colors flex items-center"
+                            aria-label="Email"><span class="material-symbols-outlined"
+                                style="font-size: 1.5rem;">mail</span></a><a
+                            href="https://www.linkedin.com/company/nextgen-forum" target="_blank"
+                            rel="noopener noreferrer"
+                            class="text-gray-600 dark:text-gray-400 hover:text-[#0E4B94] dark:hover:text-[#2CD9C3] transition-colors flex items-center"
+                            aria-label="LinkedIn"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z">
+                                </path>
+                            </svg></a></div>
+                </div>
+            </div>
+        </footer>
+    </div>
+</body>
+
+</html>
