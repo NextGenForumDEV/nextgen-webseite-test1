@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html class="light" lang="de">
 
 <head>
@@ -34,6 +34,24 @@
             },
         }
     </script>
+    <style>
+        #typewriter-cursor {
+            display: inline-block;
+            width: 2px;
+            height: 0.8em;
+            background-color: currentColor;
+            margin-left: 4px;
+            vertical-align: middle;
+            animation: blink 1s step-end infinite;
+        }
+
+        @keyframes blink {
+            from, to { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Prevent layout shift - removed min-width for natural spacing */
+    </style>
     <script src="src/js/cookie-consent.js" defer></script>
     <script src="src/js/scroll-animations.js" defer></script>
 </head>
@@ -91,7 +109,8 @@
                 <div
                     class="relative z-10 mx-auto flex h-full max-w-4xl flex-col items-center justify-center px-4 text-center">
                     <h1 class="text-5xl font-extrabold leading-tight tracking-tighter md:text-6xl lg:text-7xl">
-                        Innovation trifft Versicherung.
+                        <span id="typewriter">Zukunft</span><span id="typewriter-cursor"></span> trifft<br>
+                        Versicherung.
                     </h1>
                     <p class="mt-6 max-w-2xl text-lg text-gray-600 dark:text-gray-300 md:text-xl">
                         Wir vernetzen die Talente von morgen mit den führenden Unternehmen der Versicherungsbranche.
@@ -422,6 +441,42 @@
                 });
             });
         });
+
+        // Typewriter Effect Logic
+        const typewriterElement = document.getElementById('typewriter');
+        const words = ["Zukunft", "Vernetzung", "Förderung"];
+        let wordIndex = 0;
+        let charIndex = words[0].length;
+        let isDeleting = true;
+        let typingSpeed = 150;
+
+        function typeEffect() {
+            const currentWord = words[wordIndex];
+            
+            if (isDeleting) {
+                typewriterElement.textContent = currentWord.substring(0, charIndex - 1);
+                charIndex--;
+                typingSpeed = 100;
+            } else {
+                typewriterElement.textContent = currentWord.substring(0, charIndex + 1);
+                charIndex++;
+                typingSpeed = 150;
+            }
+
+            if (!isDeleting && charIndex === currentWord.length) {
+                isDeleting = true;
+                typingSpeed = 2000; // Wait at the end of the word
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                wordIndex = (wordIndex + 1) % words.length;
+                typingSpeed = 500; // Short pause before starting next word
+            }
+
+            setTimeout(typeEffect, typingSpeed);
+        }
+
+        // Start the effect
+        setTimeout(typeEffect, 1000);
     </script>
 </body>
 
