@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Verhindert horizontales Scrollen / weisse Raender, wenn ein Element
+   (z. B. das Partner-Marquee) breiter als der Viewport wird. */
+html,
+body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
 @layer utilities {
     .glass-header {
         @apply bg-white/80 dark:bg-[#111121]/80 backdrop-blur-md border-b border-gray-200/50 dark:border-gray-800/50;
