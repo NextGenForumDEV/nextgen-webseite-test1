@@ -14,9 +14,28 @@
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>Jetzt bewerben | NextGen Insurance Forum e.V.</title>
-    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#0E4B94" />
     <meta name="description"
         content="Bewirb dich jetzt für das NextGen Insurance Forum. Starte deine Karriere in der Versicherungswirtschaft mit exklusiven Events und unserem Semesterprogramm." />
+    <!-- Open Graph / Social Preview -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="NextGen Insurance Forum e.V." />
+    <meta property="og:title" content="Jetzt bewerben | NextGen Insurance Forum e.V." />
+    <meta property="og:description" content="Bewirb dich jetzt für das NextGen Insurance Forum. Starte deine Karriere in der Versicherungswirtschaft mit exklusiven Events und unserem Semesterprogramm." />
+    <meta property="og:image" content="https://www.nextgenforum.de/src/images/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:url" content="https://www.nextgenforum.de/jetzt-bewerben" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Jetzt bewerben | NextGen Insurance Forum e.V." />
+    <meta name="twitter:description" content="Bewirb dich jetzt für das NextGen Insurance Forum. Starte deine Karriere in der Versicherungswirtschaft mit exklusiven Events und unserem Semesterprogramm." />
+    <meta name="twitter:image" content="https://www.nextgenforum.de/src/images/og-image.png" />
+
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
@@ -238,39 +257,71 @@
 
 
                                 <!-- Checkboxes -->
-                                <div class="space-y-4 pt-4">
+                                <div
+                                    class="space-y-4 pt-4 bg-gray-50 dark:bg-gray-900/30 rounded-xl border border-gray-200 dark:border-gray-700/50 p-5 divide-y divide-gray-200 dark:divide-gray-700/50">
                                     <div class="flex items-start">
                                         <input id="commitment" name="commitment" type="checkbox"
-                                            class="h-4 w-4 rounded border-gray-300 text-[#0E4B94] focus:ring-[#2CD9C3] mt-1"
+                                            class="h-4 w-4 rounded border-gray-300 text-[#0E4B94] focus:ring-[#2CD9C3] mt-1 flex-shrink-0"
                                             required>
-                                        <label for="commitment" class="ml-3 text-sm text-gray-600 dark:text-gray-300">
+                                        <label for="commitment"
+                                            class="ml-3 text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
                                             Ich habe verstanden, dass eine Teilnahme am Programm nur möglich ist, wenn
                                             ich an allen Workshops des Semesters teilnehme. Ein unentschuldigtes
                                             Nichterscheinen führt zum Ausschluss aus dem laufenden Semester.
                                         </label>
                                     </div>
 
-                                    <div class="flex items-start">
+                                    <div class="flex items-start pt-4">
                                         <input id="privacy" name="privacy" type="checkbox"
-                                            class="h-4 w-4 rounded border-gray-300 text-[#0E4B94] focus:ring-[#2CD9C3] mt-1"
+                                            class="h-4 w-4 rounded border-gray-300 text-[#0E4B94] focus:ring-[#2CD9C3] mt-1 flex-shrink-0"
                                             required>
-                                        <label for="privacy" class="ml-3 text-sm text-gray-600 dark:text-gray-300">
+                                        <label for="privacy"
+                                            class="ml-3 text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
                                             Ich stimme der Verarbeitung meiner Daten gemäß der <a
                                                 href="datenschutzerklarung.html" target="_blank"
                                                 class="text-primary underline">Datenschutzerklärung</a> zu. Bei
-                                            erfolgreicher
-                                            Bewerbung werden wir dich per E-Mail und/oder WhatsApp kontaktieren.
+                                            erfolgreicher Bewerbung werden wir dich per E-Mail und/oder WhatsApp
+                                            kontaktieren.
                                         </label>
                                     </div>
 
-                                    <div class="flex items-start">
+                                    <div class="flex items-start pt-4">
+                                        <input id="cv-sharing" name="cv-sharing" type="checkbox"
+                                            class="h-4 w-4 rounded border-gray-300 text-[#0E4B94] focus:ring-[#2CD9C3] mt-1 flex-shrink-0"
+                                            required>
+                                        <label for="cv-sharing"
+                                            class="ml-3 text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                                            Ich willige ein, dass mein Lebenslauf und meine Bewerbungsdaten an die am
+                                            Future Talents Programm beteiligten Partnerunternehmen weitergegeben
+                                            werden – ausschließlich zum Zweck der Programmdurchführung. Diese
+                                            Einwilligung ist Voraussetzung für die Teilnahme und jederzeit widerrufbar.
+                                            <span class="block text-xs text-gray-500 dark:text-gray-400 mt-1">Details
+                                                und Widerruf: <a
+                                                    href="datenschutzerklarung.html#abschnitt-10-bewerbungen"
+                                                    target="_blank"
+                                                    class="text-primary underline">Datenschutzerklärung, Abschnitt
+                                                    10</a></span>
+                                        </label>
+                                    </div>
+
+                                    <div class="flex items-start pt-4">
                                         <input id="media-release" name="media-release" type="checkbox"
-                                            class="h-4 w-4 rounded border-gray-300 text-[#0E4B94] focus:ring-[#2CD9C3] mt-1"
+                                            class="h-4 w-4 rounded border-gray-300 text-[#0E4B94] focus:ring-[#2CD9C3] mt-1 flex-shrink-0"
                                             required>
                                         <label for="media-release"
-                                            class="ml-3 text-sm text-gray-600 dark:text-gray-300">
-                                            Ich nehme zur Kenntnis, dass im Rahmen der Veranstaltungen Foto- und
-                                            Videoaufnahmen für die Öffentlichkeitsarbeit des Vereins erstellt werden.
+                                            class="ml-3 text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                                            Ich willige ein, dass Foto- und Videoaufnahmen von Veranstaltungen, auf
+                                            denen ich erkennbar bin, vom Verein für die Öffentlichkeitsarbeit verwendet
+                                            werden dürfen – insbesondere auf der Vereins-Website und in Social-Media-
+                                            Kanälen (u. a. LinkedIn). Möchte ich an einer Veranstaltung nicht
+                                            abgebildet werden, teile ich dies vorab per E-Mail mit; ohne Mitteilung
+                                            gilt die Einwilligung fort. Widerruf jederzeit möglich.
+                                            <span class="block text-xs text-gray-500 dark:text-gray-400 mt-1">Details
+                                                und Widerruf: <a
+                                                    href="datenschutzerklarung.html#abschnitt-11-foto-video"
+                                                    target="_blank"
+                                                    class="text-primary underline">Datenschutzerklärung, Abschnitt
+                                                    11</a></span>
                                         </label>
                                     </div>
                                 </div>
@@ -436,6 +487,12 @@
             </section>
         <footer class="w-full bg-gray-100 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 py-8 relative">
             <div class="container mx-auto px-4">
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8 pb-8 border-b border-gray-200 dark:border-gray-800 max-w-6xl mx-auto">
+                    <img src="./src/images/ehrenamt_badge.png" alt="Gefördert vom Land Nordrhein-Westfalen – Engagiert in NRW" class="h-14 w-auto object-contain" />
+                    <p class="text-xs text-gray-500 dark:text-gray-400 text-center sm:text-left max-w-sm">
+                        Als ehrenamtlich getragener Verein gefördert durch das Land Nordrhein-Westfalen.
+                    </p>
+                </div>
                 <div class="flex flex-col md:flex-row items-center justify-between gap-6 max-w-6xl mx-auto">
                     <div class="text-gray-600 dark:text-gray-400 text-sm font-medium flex-1">
                         © 2026 NextGen Insurance Forum e.V.
@@ -477,7 +534,7 @@
                     
                     <div class="bg-gray-50 dark:bg-gray-800 p-6 rounded-xl border border-gray-100 dark:border-gray-700 mb-6">
                         <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">Unsere Bankverbindung</h3>
-                        <p class="text-gray-700 dark:text-gray-300 font-mono text-lg mb-1 font-bold">IBAN: DE12 3707 0209 0079 2309 00</p>
+                        <p class="text-gray-700 dark:text-gray-300 font-mono text-lg mb-1 font-bold">IBAN: DE82 3707 0209 0079 2309 01</p>
                         <p class="text-gray-600 dark:text-gray-400 mb-1">BIC: DEUTDEDKP08</p>
                         <p class="text-gray-600 dark:text-gray-400">Empfänger: NextGen Insurance Forum e.V.</p>
                     </div>
