@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+# Vorlagen-Fragmente und API-Endpoints von der Indexierung ausschliessen
+Disallow: /api/
+Disallow: /about_head.html
+Disallow: /about_tail.html
+Disallow: /brevo.html
+
+Sitemap: https://www.nextgenforum.de/sitemap.xml
