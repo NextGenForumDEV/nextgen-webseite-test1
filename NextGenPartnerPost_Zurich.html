@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <style>
+    @page {
+      size: 1080px 1350px;
+      margin: 0;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: white;
+    }
+
+    /* ─── Slide base ─────────────────────────────── */
+    .slide {
+      width: 1080px;
+      height: 1350px;
+      position: relative;
+      overflow: hidden;
+      page-break-after: always;
+      display: flex;
+      flex-direction: column;
+    }
+    .slide:last-child {
+      page-break-after: avoid;
+    }
+
+    /* ─── Colors ─────────────────────────────────── */
+    /* Dunkelblau #03045E  Türkis #21C9B9  Anthrazit #3D4140  Hellgrau #F4F4F4 */
+
+    /* ══════════════════════════════════════════════
+       SLIDE 1 – HOOK / PARTNERVORSTELLUNG
+    ══════════════════════════════════════════════ */
+    .s1 {
+      background-color: #03045E;
+      padding: 60px;
+    }
+
+    .s1-topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 40px;
+    }
+    .s1-counter {
+      font-size: 16px;
+      color: #21C9B9;
+      letter-spacing: 0.05em;
+      font-weight: 600;
+    }
+    .s1-badge {
+      background-color: rgba(33,201,185,0.18);
+      border: 1.5px solid #21C9B9;
+      color: #21C9B9;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      padding: 6px 16px;
+      border-radius: 4px;
+    }
+
+    .s1-logo-wrap {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 30px 0 20px;
+    }
+    .s1-logo-wrap img {
+      max-height: 200px;
+      max-width: 420px;
+      object-fit: contain;
+    }
+
+    .s1-claim {
+      font-size: 52px;
+      font-weight: 800;
+      color: #FFFFFF;
+      line-height: 1.18;
+      letter-spacing: -0.01em;
+      margin: 0 0 50px 0;
+      text-align: left;
+    }
+
+    .s1-eventbar {
+      background-color: rgba(33,201,185,0.13);
+      border-left: 5px solid #21C9B9;
+      padding: 20px 28px;
+      border-radius: 6px;
+      margin-bottom: 60px;
+    }
+    .s1-eventbar-label {
+      font-size: 13px;
+      font-weight: 700;
+      color: #21C9B9;
+      letter-spacing: 0.12em;
+      margin-bottom: 8px;
+    }
+    .s1-eventbar-details {
+      font-size: 19px;
+      font-weight: 700;
+      color: #FFFFFF;
+      letter-spacing: 0.04em;
+    }
+    .s1-eventbar-sep {
+      color: #21C9B9;
+      margin: 0 10px;
+    }
+
+    /* ══════════════════════════════════════════════
+       SLIDE 2 – DAS UNTERNEHMEN
+    ══════════════════════════════════════════════ */
+    .s2 {
+      background: #FFFFFF;
+      padding: 60px;
+    }
+
+    .slide-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 48px;
+    }
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #21C9B9;
+      flex-shrink: 0;
+    }
+    .slide-label {
+      font-size: 16px;
+      font-weight: 600;
+      color: #3D4140;
+      letter-spacing: 0.04em;
+    }
+    .slide-counter-right {
+      margin-left: auto;
+      font-size: 15px;
+      color: #3D4140;
+      font-weight: 500;
+    }
+
+    .s2-headline {
+      font-size: 52px;
+      font-weight: 800;
+      color: #03045E;
+      line-height: 1.15;
+      margin-bottom: 28px;
+    }
+
+    .s2-body {
+      font-size: 21px;
+      color: #3D4140;
+      line-height: 1.6;
+      margin-bottom: 52px;
+      max-width: 880px;
+    }
+
+    .s2-divider {
+      width: 60px;
+      height: 4px;
+      background: #21C9B9;
+      border-radius: 2px;
+      margin-bottom: 44px;
+    }
+
+    .s2-stats {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .s2-stat-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 22px;
+      padding: 18px 0;
+      border-bottom: 1px solid #F0F0F0;
+    }
+    .s2-stat-row:last-child {
+      border-bottom: none;
+    }
+    .s2-stat-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      background: #F4F4F4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 20px;
+      color: #21C9B9;
+    }
+    .s2-stat-content {}
+    .s2-stat-label {
+      font-size: 13px;
+      font-weight: 700;
+      color: #21C9B9;
+      letter-spacing: 0.12em;
+      margin-bottom: 4px;
+    }
+    .s2-stat-value {
+      font-size: 19px;
+      font-weight: 700;
+      color: #03045E;
+    }
+    .s2-stat-sub {
+      font-size: 17px;
+      color: #3D4140;
+      font-weight: 400;
+    }
+
+    /* ══════════════════════════════════════════════
+       SLIDE 3 – DIE SPEAKER
+    ══════════════════════════════════════════════ */
+    .s3 {
+      background: #FFFFFF;
+      padding: 60px;
+    }
+
+    .s3-headline {
+      font-size: 44px;
+      font-weight: 800;
+      color: #03045E;
+      margin-bottom: 36px;
+    }
+
+    .s3-speakers {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+      margin-bottom: 36px;
+    }
+    .s3-speaker-card {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      background: #F4F4F4;
+      border-radius: 12px;
+      padding: 22px 26px;
+    }
+    .s3-avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: #03045E;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: 800;
+      flex-shrink: 0;
+      letter-spacing: 0.02em;
+    }
+    .s3-speaker-info {}
+    .s3-speaker-name {
+      font-size: 18px;
+      font-weight: 700;
+      color: #03045E;
+      margin-bottom: 3px;
+    }
+    .s3-speaker-role {
+      font-size: 15px;
+      color: #3D4140;
+      margin-bottom: 3px;
+    }
+    .s3-speaker-company {
+      font-size: 14px;
+      font-weight: 600;
+      color: #21C9B9;
+      letter-spacing: 0.05em;
+    }
+    .s3-location-pill {
+      margin-left: auto;
+      background: #03045E;
+      color: white;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      padding: 4px 12px;
+      border-radius: 20px;
+      flex-shrink: 0;
+    }
+
+    .s3-hr-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 26px;
+      background: rgba(33,201,185,0.08);
+      border-left: 4px solid #21C9B9;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 36px;
+    }
+    .s3-hr-badge {
+      background: #21C9B9;
+      color: white;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      padding: 4px 10px;
+      border-radius: 4px;
+      flex-shrink: 0;
+    }
+    .s3-hr-text {
+      font-size: 16px;
+      color: #3D4140;
+    }
+
+    .s3-tags {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .s3-tag-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .s3-tag-label {
+      font-size: 13px;
+      font-weight: 700;
+      color: #3D4140;
+      letter-spacing: 0.1em;
+      width: 88px;
+      flex-shrink: 0;
+    }
+    .s3-tag-value {
+      font-size: 17px;
+      font-weight: 600;
+      color: #03045E;
+    }
+    .s3-tag-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #21C9B9;
+      flex-shrink: 0;
+    }
+
+    /* ══════════════════════════════════════════════
+       SLIDE 4 – JETZT ANMELDEN
+    ══════════════════════════════════════════════ */
+    .s4 {
+      background: #03045E;
+      padding: 60px;
+    }
+
+    .s4-cta-badge {
+      display: inline-block;
+      background: rgba(33,201,185,0.18);
+      border: 1.5px solid #21C9B9;
+      color: #21C9B9;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      padding: 7px 18px;
+      border-radius: 4px;
+      margin-bottom: 48px;
+    }
+
+    .s4-sub {
+      font-size: 20px;
+      font-weight: 700;
+      color: #21C9B9;
+      letter-spacing: 0.1em;
+      margin-bottom: 16px;
+    }
+    .s4-headline {
+      font-size: 72px;
+      font-weight: 800;
+      color: #FFFFFF;
+      line-height: 1.1;
+      margin-bottom: 40px;
+    }
+
+    .s4-body {
+      font-size: 22px;
+      color: rgba(255,255,255,0.85);
+      line-height: 1.55;
+      margin-bottom: 50px;
+      max-width: 760px;
+    }
+
+    .s4-link-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 10px;
+      padding: 20px 26px;
+      margin-bottom: 50px;
+    }
+    .s4-arrow {
+      font-size: 26px;
+      color: #21C9B9;
+      font-weight: 700;
+    }
+    .s4-link-text {
+      font-size: 21px;
+      font-weight: 700;
+      color: #FFFFFF;
+      letter-spacing: 0.02em;
+    }
+
+    .s4-details {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .s4-detail-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .s4-detail-icon {
+      font-size: 20px;
+      color: #21C9B9;
+    }
+    .s4-detail-text {
+      font-size: 19px;
+      font-weight: 600;
+      color: #FFFFFF;
+      letter-spacing: 0.03em;
+    }
+
+    /* ─── Shared Footer ──────────────────────────── */
+    .slide-footer {
+      margin-top: auto;
+      padding-top: 24px;
+      border-top: 1.5px solid rgba(255,255,255,0.18);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .slide-footer-light {
+      border-top: 1.5px solid #E8E8E8;
+    }
+    .footer-tagline {
+      font-size: 15px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.7);
+      letter-spacing: 0.05em;
+    }
+    .footer-tagline-dark {
+      color: #3D4140;
+    }
+    .footer-domain {
+      font-size: 15px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.55);
+    }
+    .footer-domain-dark {
+      color: #21C9B9;
+    }
+
+    /* ─── NGIF Logo in footer ────────────────────── */
+    .footer-logo {
+      height: 36px;
+      width: auto;
+      object-fit: contain;
+    }
+
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 1 – PARTNERVORSTELLUNG
+══════════════════════════════════════════════════ -->
+<div class="slide s1">
+
+  <div class="s1-topbar">
+    <span class="s1-counter">01 / 04 &middot; Workshop 4</span>
+    <span class="s1-badge">PARTNERVORSTELLUNG</span>
+  </div>
+
+  <div class="s1-logo-wrap">
+    <img src="./src/images/zurich_uebereinander.png" alt="Z ZURICH" />
+  </div>
+
+  <h1 class="s1-claim">Globale Versicherungs&shy;kompetenz.<br>Lokal verankert in Köln.</h1>
+
+  <div class="s1-eventbar">
+    <div class="s1-eventbar-label">VERANSTALTUNG</div>
+    <div class="s1-eventbar-details">
+      MITTWOCH
+      <span class="s1-eventbar-sep">|</span>
+      08.07.2026
+      <span class="s1-eventbar-sep">|</span>
+      17:00 Uhr
+      <span class="s1-eventbar-sep">|</span>
+      Zurich &ndash; Office Köln
+    </div>
+  </div>
+
+  <div class="slide-footer">
+    <img class="footer-logo" src="./src/images/logo.png" alt="NextGen Insurance Forum" />
+    <span class="footer-tagline">Vernetzung. Förderung. Zukunft.</span>
+    <span class="footer-domain">nextgenforum.de</span>
+  </div>
+
+</div>
+
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 2 – DAS UNTERNEHMEN
+══════════════════════════════════════════════════ -->
+<div class="slide s2">
+
+  <div class="slide-header">
+    <div class="dot"></div>
+    <span class="slide-label">02 / 04 &middot; Das Unternehmen</span>
+    <span class="slide-counter-right"></span>
+  </div>
+
+  <h2 class="s2-headline">Weltklasse trifft Köln.</h2>
+
+  <p class="s2-body">
+    Die Zurich Insurance Group zählt zu den führenden Versicherern weltweit.
+    In Deutschland ist Zurich seit über 100 Jahren aktiv und begleitet Privat- und
+    Geschäftskunden mit ganzheitlichen Lösungen in Schaden-, Unfall- und
+    Lebensversicherung &ndash; nachhaltig, digital und zukunftsorientiert.
+  </p>
+
+  <div class="s2-divider"></div>
+
+  <div class="s2-stats">
+    <div class="s2-stat-row">
+      <div class="s2-stat-icon">&#128197;</div>
+      <div class="s2-stat-content">
+        <div class="s2-stat-label">GEGRÜNDET</div>
+        <div class="s2-stat-value">1872</div>
+      </div>
+    </div>
+    <div class="s2-stat-row">
+      <div class="s2-stat-icon">&#128101;</div>
+      <div class="s2-stat-content">
+        <div class="s2-stat-label">MITARBEITENDE</div>
+        <div class="s2-stat-value">~ 55.000</div>
+      </div>
+    </div>
+    <div class="s2-stat-row">
+      <div class="s2-stat-icon">&#128205;</div>
+      <div class="s2-stat-content">
+        <div class="s2-stat-label">HAUPTSITZE</div>
+        <div class="s2-stat-value">Zürich (CH) &nbsp;&middot;&nbsp; Köln (DE)</div>
+      </div>
+    </div>
+    <div class="s2-stat-row">
+      <div class="s2-stat-icon">&#128200;</div>
+      <div class="s2-stat-content">
+        <div class="s2-stat-label">SCHWERPUNKTE</div>
+        <div class="s2-stat-value">Schaden / Unfall</div>
+        <div class="s2-stat-sub">Lebensversicherung &nbsp;&middot;&nbsp; Industrie</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide-footer slide-footer-light">
+    <img class="footer-logo" src="./src/images/logo.png" alt="NextGen Insurance Forum" />
+    <span class="footer-tagline footer-tagline-dark">Vernetzung. Förderung. Zukunft.</span>
+    <span class="footer-domain footer-domain-dark">nextgenforum.de</span>
+  </div>
+
+</div>
+
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 3 – DIE SPEAKER
+══════════════════════════════════════════════════ -->
+<div class="slide s3">
+
+  <div class="slide-header">
+    <div class="dot"></div>
+    <span class="slide-label">03 / 04 &middot; Die Speaker</span>
+  </div>
+
+  <h2 class="s3-headline">Eure Speaker</h2>
+
+  <div class="s3-speakers">
+
+    <div class="s3-speaker-card">
+      <div class="s3-avatar">NN</div>
+      <div class="s3-speaker-info">
+        <div class="s3-speaker-name">[Vorname Nachname]</div>
+        <div class="s3-speaker-role">[Funktion] &middot; Zurich Insurance</div>
+        <div class="s3-speaker-company">ZURICH INSURANCE</div>
+      </div>
+      <div class="s3-location-pill">KÖLN</div>
+    </div>
+
+    <div class="s3-speaker-card">
+      <div class="s3-avatar">NN</div>
+      <div class="s3-speaker-info">
+        <div class="s3-speaker-name">[Vorname Nachname]</div>
+        <div class="s3-speaker-role">[Funktion] &middot; Zurich Insurance</div>
+        <div class="s3-speaker-company">ZURICH INSURANCE</div>
+      </div>
+      <div class="s3-location-pill">KÖLN</div>
+    </div>
+
+  </div>
+
+  <div class="s3-hr-row">
+    <span class="s3-hr-badge">HR</span>
+    <span class="s3-hr-text">[Ansprechpartner:in Karriere] &nbsp;&middot;&nbsp; Zurich Insurance</span>
+  </div>
+
+  <div class="s3-tags">
+    <div class="s3-tag-row">
+      <div class="s3-tag-dot"></div>
+      <span class="s3-tag-label">THEMA</span>
+      <span class="s3-tag-value">[Thema folgt in Kürze]</span>
+    </div>
+    <div class="s3-tag-row">
+      <div class="s3-tag-dot"></div>
+      <span class="s3-tag-label">FORMAT</span>
+      <span class="s3-tag-value">Interaktiver Workshop</span>
+    </div>
+    <div class="s3-tag-row">
+      <div class="s3-tag-dot"></div>
+      <span class="s3-tag-label">ANSCHLUSS</span>
+      <span class="s3-tag-value">Networking-Dinner</span>
+    </div>
+  </div>
+
+  <div class="slide-footer slide-footer-light">
+    <img class="footer-logo" src="./src/images/logo.png" alt="NextGen Insurance Forum" />
+    <span class="footer-tagline footer-tagline-dark">Vernetzung. Förderung. Zukunft.</span>
+    <span class="footer-domain footer-domain-dark">nextgenforum.de</span>
+  </div>
+
+</div>
+
+
+<!-- ══════════════════════════════════════════════════
+     SLIDE 4 – JETZT ANMELDEN
+══════════════════════════════════════════════════ -->
+<div class="slide s4">
+
+  <div class="s4-cta-badge">04 / 04 &middot; JETZT ANMELDEN</div>
+
+  <div class="s4-sub">BEREIT FÜR DEN WORKSHOP?</div>
+
+  <div class="s4-headline">Jetzt<br>bewerben.</div>
+
+  <p class="s4-body">
+    Sichere dir deinen Platz beim Workshop bei
+    Zurich &ndash; begrenzte Plätze, Bewerbung in wenigen Minuten.
+  </p>
+
+  <div class="s4-link-row">
+    <span class="s4-arrow">&#8594;</span>
+    <span class="s4-link-text">nextgenforum.de/jetzt-bewerben</span>
+  </div>
+
+  <div class="s4-details">
+    <div class="s4-detail-row">
+      <span class="s4-detail-icon">&#128197;</span>
+      <span class="s4-detail-text">Mi &middot; 08.07.2026 &middot; 17:00 Uhr</span>
+    </div>
+    <div class="s4-detail-row">
+      <span class="s4-detail-icon">&#128205;</span>
+      <span class="s4-detail-text">Zurich &ndash; Office Köln</span>
+    </div>
+  </div>
+
+  <div class="slide-footer">
+    <img class="footer-logo" src="./src/images/logo.png" alt="NextGen Insurance Forum" />
+    <span class="footer-tagline">Vernetzung. Förderung. Zukunft.</span>
+    <span class="footer-domain">nextgenforum.de</span>
+  </div>
+
+</div>
+
+</body>
+</html>
