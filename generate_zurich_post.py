@@ -8,9 +8,9 @@ from reportlab.pdfgen import canvas
 from reportlab.lib.units import cm
 from reportlab.lib import colors
 from reportlab.lib.utils import ImageReader
-from reportlab.pdfbase import pdfmetrics
-from reportlab.pdfbase.ttfonts import TTFont
-import os, urllib.request, tempfile
+import numpy as np
+from PIL import Image
+import os, tempfile
 
 # ── Page dimensions (identical to CrossConsulting PDF) ──────────────────────
 PW = 810
@@ -31,23 +31,41 @@ NG_LOGO  = f"{DIR}/src/images/logo.png"
 ZU_LOGO  = f"{DIR}/src/images/zurich_uebereinander.png"
 OUTPUT   = f"{DIR}/NextGenPartnerPost_Zurich.pdf"
 
+# ── Background generation ─────────────────────────────────────────────────────
+
+_BG_PATH = os.path.join(tempfile.gettempdir(), "nextgen_zurich_bg.png")
+
+def _build_bg():
+    """Reconstruct the exact CrossConsulting background via corner Gaussian weights."""
+    W, H = int(PW), int(PH)
+    sigma = 265
+    corners = [
+        ((0, 0),  (212, 223, 236)),
+        ((W, 0),  (157, 200, 216)),
+        ((0, H),  (171, 223, 226)),
+        ((W, H),  (213, 247, 243)),
+    ]
+    xs = np.arange(W, dtype=np.float32)
+    ys = np.arange(H, dtype=np.float32)
+    xx, yy = np.meshgrid(xs, ys)
+    r = np.full((H, W), 255.0, dtype=np.float32)
+    g = np.full((H, W), 255.0, dtype=np.float32)
+    b = np.full((H, W), 255.0, dtype=np.float32)
+    for (cx, cy), col in corners:
+        w = np.exp(-((xx - cx)**2 + (yy - cy)**2) / (2 * sigma**2))
+        r += w * (col[0] - 255)
+        g += w * (col[1] - 255)
+        b += w * (col[2] - 255)
+    arr = np.stack([r, g, b], axis=2).clip(0, 255).astype(np.uint8)
+    Image.fromarray(arr, "RGB").save(_BG_PATH)
+
+_build_bg()
+
 # ── Helpers ───────────────────────────────────────────────────────────────────
 
 def bg(c):
-    """Soft diagonal gradient background (top-right light-teal → bottom-left white)."""
-    steps = 80
-    for i in range(steps):
-        t = i / steps
-        r = 1.0  - t * 0.06
-        g = 1.0  - t * 0.02
-        b = 1.0  + t * 0.00   # stays white-ish but slightly cooler top
-        # top strip lighter / bottom slightly warmer white
-        # Actually replicate: very light cyan tint at top, plain white at bottom
-        r2 = 0.94 + (1 - t) * 0.06
-        g2 = 0.96 + (1 - t) * 0.04
-        b2 = 0.99 + (1 - t) * 0.01
-        c.setFillColorRGB(r2, g2, b2)
-        c.rect(0, PH * i / steps, PW, PH / steps + 1, stroke=0, fill=1)
+    """Embed the pre-computed background image."""
+    c.drawImage(_BG_PATH, 0, 0, width=PW, height=PH)
 
 
 def header(c, slide_num, slide_title):
