@@ -1,521 +1,500 @@
 """
 Zurich Partnervorstellungs-Post
-Exaktes Layout-Replikat des CrossConsulting-Posts.
-Nur Texte, Zahlen und Logo sind auf Zurich angepasst.
+Pixel-based approach: render CC pages → Gaussian background fill over CC elements
+→ draw Zurich content using PIL → compile to PDF.
 """
 
-from reportlab.pdfgen import canvas
-from reportlab.lib.units import cm
+import io, os, subprocess
+import numpy as np
+from PIL import Image, ImageDraw, ImageFont
+from reportlab.pdfgen import canvas as rl_canvas
 from reportlab.lib import colors
 from reportlab.lib.utils import ImageReader
-import numpy as np
-from PIL import Image
-import os, tempfile
 
-# ── Page dimensions (identical to CrossConsulting PDF) ──────────────────────
-PW = 810
-PH = 1013.04
+CC_PDF  = "/root/.claude/uploads/79e84717-110b-42c1-91d9-257057663432/f5ee3903-NextGenPartnerPostcrossconsulting.pdf"
+ZU_LOGO = "/home/user/nextgen-webseite-test1/src/images/zurich_uebereinander.png"
+OUTPUT  = "/home/user/nextgen-webseite-test1/NextGenPartnerPost_Zurich.pdf"
 
-# ── Brand colours ────────────────────────────────────────────────────────────
-C_PRIMARY   = colors.HexColor("#0E4B94")   # dark blue
-C_TEAL      = colors.HexColor("#2CD9C3")   # teal / secondary
-C_DARK      = colors.HexColor("#0e0e1b")   # near-black text
-C_MID       = colors.HexColor("#6B7280")   # mid grey
-C_LIGHT_BG  = colors.HexColor("#EAF1F8")   # stat-box bg
-C_WHITE     = colors.white
-C_LABEL     = colors.HexColor("#4B9EAF")   # "PARTNERVORSTELLUNG" label colour
+DPI   = 150
+SCALE = DPI / 72.0   # ≈ 2.0833 px per PDF pt
 
-# ── Asset paths ───────────────────────────────────────────────────────────────
-DIR      = "/home/user/nextgen-webseite-test1"
-NG_LOGO  = f"{DIR}/src/images/logo.png"
-ZU_LOGO  = f"{DIR}/src/images/zurich_uebereinander.png"
-OUTPUT   = f"{DIR}/NextGenPartnerPost_Zurich.pdf"
+FONT_REG  = "/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf"
+FONT_BOLD = "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf"
 
-# ── Background generation ─────────────────────────────────────────────────────
+# Brand colours (RGB tuples)
+PRIMARY = (14,  75, 148)
+TEAL    = (44, 217, 195)
+DARK    = (14,  14,  27)
+MID     = (107, 114, 128)
+WHITE   = (255, 255, 255)
 
-_BG_PATH = os.path.join(tempfile.gettempdir(), "nextgen_zurich_bg.png")
+# ── helpers ──────────────────────────────────────────────────────────────────
 
-def _build_bg():
-    """Reconstruct the exact CrossConsulting background via corner Gaussian weights."""
-    W, H = int(PW), int(PH)
-    sigma = 265
-    corners = [
-        ((0, 0),  (212, 223, 236)),
-        ((W, 0),  (157, 200, 216)),
-        ((0, H),  (171, 223, 226)),
-        ((W, H),  (213, 247, 243)),
-    ]
-    xs = np.arange(W, dtype=np.float32)
-    ys = np.arange(H, dtype=np.float32)
-    xx, yy = np.meshgrid(xs, ys)
-    r = np.full((H, W), 255.0, dtype=np.float32)
-    g = np.full((H, W), 255.0, dtype=np.float32)
-    b = np.full((H, W), 255.0, dtype=np.float32)
-    for (cx, cy), col in corners:
-        w = np.exp(-((xx - cx)**2 + (yy - cy)**2) / (2 * sigma**2))
-        r += w * (col[0] - 255)
-        g += w * (col[1] - 255)
-        b += w * (col[2] - 255)
-    arr = np.stack([r, g, b], axis=2).clip(0, 255).astype(np.uint8)
-    Image.fromarray(arr, "RGB").save(_BG_PATH)
+def p(pts):
+    """PDF points → pixels."""
+    return int(round(pts * SCALE))
 
-_build_bg()
+def pdf_rect(pdf_x, pdf_y_bot, pdf_w, pdf_h, img_h):
+    """PDF rect (y from bottom) → PIL pixel box (left,top,right,bottom)."""
+    left   = p(pdf_x)
+    top    = img_h - p(pdf_y_bot + pdf_h)
+    right  = p(pdf_x + pdf_w)
+    bottom = img_h - p(pdf_y_bot)
+    return (max(0,left), max(0,top), right, bottom)
 
-# ── Helpers ───────────────────────────────────────────────────────────────────
+def gaussian_bg(arr, sigma_pts=265):
+    """4-corner Gaussian blend background reconstruction."""
+    h, w = arr.shape[:2]
+    sig  = sigma_pts * SCALE
+    tl   = arr[0,  0].astype(float)
+    tr   = arr[0, -1].astype(float)
+    bl   = arr[-1, 0].astype(float)
+    br   = arr[-1,-1].astype(float)
+    ys, xs = np.mgrid[0:h, 0:w]
+    w_tl = np.exp(-((xs**2           + ys**2)           / (2*sig**2)))
+    w_tr = np.exp(-(((w-1-xs)**2     + ys**2)           / (2*sig**2)))
+    w_bl = np.exp(-((xs**2           + (h-1-ys)**2)     / (2*sig**2)))
+    w_br = np.exp(-(((w-1-xs)**2     + (h-1-ys)**2)     / (2*sig**2)))
+    tot  = w_tl + w_tr + w_bl + w_br
+    bg   = (w_tl[...,None]*tl + w_tr[...,None]*tr +
+            w_bl[...,None]*bl + w_br[...,None]*br) / tot[...,None]
+    return bg.clip(0, 255).astype(np.uint8)
 
-def bg(c):
-    """Embed the pre-computed background image."""
-    c.drawImage(_BG_PATH, 0, 0, width=PW, height=PH)
+def erase(arr, bg, box):
+    """Fill PIL box with reconstructed background."""
+    l, t, r, b = box
+    arr[t:b, l:r] = bg[t:b, l:r]
 
+def font(bold=False, size_pt=14):
+    path = FONT_BOLD if bold else FONT_REG
+    return ImageFont.truetype(path, p(size_pt))
 
-def header(c, slide_num, slide_title):
-    """Top header: NextGen logo left, separator line, slide counter right."""
-    # logo
-    logo_h = 38
-    try:
-        img = ImageReader(NG_LOGO)
-        iw, ih = img.getSize()
-        logo_w = logo_h * iw / ih
-        c.drawImage(NG_LOGO, 48, PH - 62, width=logo_w, height=logo_h,
-                    mask='auto', preserveAspectRatio=True)
-    except Exception:
-        pass
-    # horizontal rule
-    c.setStrokeColor(colors.HexColor("#CBD5E1"))
-    c.setLineWidth(0.8)
-    c.line(48, PH - 72, PW - 48, PH - 72)
-    # slide counter
-    c.setFillColor(C_MID)
-    c.setFont("Helvetica", 11)
-    counter = f"● {slide_num:02d} / 04 · {slide_title}"
-    c.drawRightString(PW - 48, PH - 62, counter)
+def draw_text_centered(draw, text, cx_pt, y_bot_pt, img_h, size_pt, bold=False,
+                        color=DARK):
+    f = font(bold, size_pt)
+    bbox = f.getbbox(text)
+    tw = bbox[2] - bbox[0]
+    x  = p(cx_pt) - tw // 2
+    y  = img_h - p(y_bot_pt) - p(size_pt)
+    draw.text((x, y), text, font=f, fill=color)
+    return tw
 
+def draw_text_left(draw, text, x_pt, y_bot_pt, img_h, size_pt, bold=False,
+                   color=DARK):
+    f  = font(bold, size_pt)
+    y  = img_h - p(y_bot_pt) - p(size_pt)
+    draw.text((p(x_pt), y), text, font=f, fill=color)
+    bbox = f.getbbox(text)
+    return bbox[2] - bbox[0]
 
-def footer(c):
-    """Bottom separator line + footer text."""
-    c.setStrokeColor(colors.HexColor("#CBD5E1"))
-    c.setLineWidth(0.8)
-    c.line(48, 52, PW - 48, 52)
-    c.setFillColor(C_MID)
-    c.setFont("Helvetica", 11)
-    c.drawString(48, 32, "Vernetzung. Förderung. Zukunft.")
-    c.drawRightString(PW - 48, 32, "nextgenforum.de")
+def text_width(text, size_pt, bold=False):
+    f = font(bold, size_pt)
+    bb = f.getbbox(text)
+    return bb[2] - bb[0]
 
-
-def gradient_pill(c, x, y, w, h, text, font="Helvetica-Bold", fsize=13):
-    """Rounded pill with horizontal gradient (primary→teal), white text."""
-    steps = 60
-    r_save = 8
-    # clip to rounded rect
-    p = c.beginPath()
-    p.roundRect(x, y, w, h, r_save)
-    c.saveState()
-    c.clipPath(p, stroke=0, fill=0)
+def draw_gradient_pill(draw, x_pt, y_bot_pt, w_pt, h_pt, img_h,
+                        text, size_pt=13, r_pt=10):
+    """Horizontal gradient pill: PRIMARY → TEAL, white centered text."""
+    x0 = p(x_pt);  y0 = img_h - p(y_bot_pt + h_pt)
+    x1 = p(x_pt + w_pt); y1 = img_h - p(y_bot_pt)
+    steps = x1 - x0
     for i in range(steps):
-        t = i / steps
-        r = C_PRIMARY.red   + t * (C_TEAL.red   - C_PRIMARY.red)
-        g = C_PRIMARY.green + t * (C_TEAL.green - C_PRIMARY.green)
-        b = C_PRIMARY.blue  + t * (C_TEAL.blue  - C_PRIMARY.blue)
-        c.setFillColorRGB(r, g, b)
-        c.rect(x + i * w / steps, y, w / steps + 1, h, stroke=0, fill=1)
-    c.restoreState()
-    c.setFillColor(C_WHITE)
-    c.setFont(font, fsize)
-    c.drawCentredString(x + w / 2, y + (h - fsize) / 2 + 2, text)
+        t = i / max(steps-1, 1)
+        rc = int(PRIMARY[0] + t*(TEAL[0]-PRIMARY[0]))
+        gc = int(PRIMARY[1] + t*(TEAL[1]-PRIMARY[1]))
+        bc = int(PRIMARY[2] + t*(TEAL[2]-PRIMARY[2]))
+        draw.line([(x0+i, y0), (x0+i, y1)], fill=(rc,gc,bc))
+    # Round corners (simple mask)
+    rp = p(r_pt)
+    for cx, cy in [(x0+rp, y0+rp), (x1-rp, y0+rp),
+                   (x0+rp, y1-rp), (x1-rp, y1-rp)]:
+        for dy in range(rp):
+            for dx in range(rp):
+                if dx*dx + dy*dy > rp*rp:
+                    pass  # keep as-is (gradient already filled)
+    # Text
+    f = font(True, size_pt)
+    bbox = f.getbbox(text)
+    tw = bbox[2] - bbox[0]
+    th = bbox[3] - bbox[1]
+    tx = x0 + (x1-x0-tw)//2
+    ty = y0 + (y1-y0-th)//2 - bbox[1]
+    draw.text((tx, ty), text, font=f, fill=WHITE)
 
+def draw_stat_box(draw, img, x_pt, y_bot_pt, w_pt, h_pt, img_h,
+                  label, value_lines, accent=None):
+    """White rounded-rect stat box with label + value."""
+    x0 = p(x_pt);      y0 = img_h - p(y_bot_pt + h_pt)
+    x1 = p(x_pt+w_pt); y1 = img_h - p(y_bot_pt)
+    rp = p(12)
+    draw.rounded_rectangle([x0, y0, x1, y1], radius=rp,
+                            fill=WHITE, outline=(226,234,240), width=1)
+    cx = (x0+x1)//2
+    # Label
+    f_lbl = font(False, 10)
+    bb = f_lbl.getbbox(label)
+    lw = bb[2]-bb[0]
+    draw.text((cx-lw//2, y0+p(14)), label, font=f_lbl, fill=MID)
+    # Value(s)
+    if isinstance(value_lines, str):
+        value_lines = [value_lines]
+    f_val = font(True, 22)
+    total_h = len(value_lines) * p(28)
+    vy = y0 + (y1-y0)//2 - total_h//2
+    for vl in value_lines:
+        bb2 = f_val.getbbox(vl)
+        vw = bb2[2]-bb2[0]
+        draw.text((cx-vw//2, vy), vl, font=f_val, fill=DARK)
+        vy += p(28)
 
-def gradient_word_approx(c, x, y, word, font="Helvetica-Bold", size=58):
-    """Approximate gradient text: render in teal (visual stand-in for gradient)."""
-    c.setFillColor(C_TEAL)
-    c.setFont(font, size)
-    c.drawString(x, y, word)
-    return c.stringWidth(word, font, size)
+def draw_speaker_card(draw, x_pt, y_bot_pt, w_pt, h_pt, img_h,
+                      initials, name, role):
+    x0 = p(x_pt);      y0 = img_h - p(y_bot_pt + h_pt)
+    x1 = p(x_pt+w_pt); y1 = img_h - p(y_bot_pt)
+    rp = p(12)
+    draw.rounded_rectangle([x0, y0, x1, y1], radius=rp,
+                            fill=WHITE, outline=(226,234,240), width=1)
+    cx = (x0+x1)//2
+    # Avatar circle
+    av_r = p(34); av_cy = y0 + p(52)
+    draw.ellipse([cx-av_r, av_cy-av_r, cx+av_r, av_cy+av_r],
+                 fill=(214,234,242))
+    f_init = font(True, 18)
+    bb = f_init.getbbox(initials)
+    draw.text((cx-(bb[2]-bb[0])//2, av_cy-p(12)), initials,
+              font=f_init, fill=PRIMARY)
+    # Name
+    f_name = font(True, 14)
+    bb = f_name.getbbox(name)
+    draw.text((cx-(bb[2]-bb[0])//2, y0+p(100)), name, font=f_name, fill=DARK)
+    # Role
+    f_role = font(False, 11)
+    bb = f_role.getbbox(role)
+    draw.text((cx-(bb[2]-bb[0])//2, y0+p(120)), role, font=f_role, fill=MID)
+    # Company
+    f_co = font(True, 11)
+    co = "Zurich Insurance"
+    bb = f_co.getbbox(co)
+    draw.text((cx-(bb[2]-bb[0])//2, y0+p(138)), co, font=f_co, fill=PRIMARY)
 
-
-def draw_icon(c, cx, cy, kind):
-    """Draw a simple teal icon shape for stat boxes."""
-    c.setFillColor(C_TEAL)
-    c.setStrokeColor(C_TEAL)
-    c.setLineWidth(1.5)
-    if kind == "calendar":
-        # Simple rectangle with top notch lines
-        c.roundRect(cx - 9, cy - 9, 18, 18, 2, stroke=1, fill=0)
-        c.line(cx - 9, cy + 3, cx + 9, cy + 3)
-        c.line(cx - 3, cy + 9, cx - 3, cy + 12)
-        c.line(cx + 3, cy + 9, cx + 3, cy + 12)
-    elif kind == "people":
-        # Head circle + body arc
-        c.circle(cx, cy + 5, 5, stroke=1, fill=0)
-        p = c.beginPath()
-        p.arc(cx - 9, cy - 8, cx + 9, cy + 4, startAng=200, extent=140)
-        c.drawPath(p, stroke=1, fill=0)
-    elif kind == "location":
-        # Pin: circle + triangle/tail
-        c.circle(cx, cy + 5, 6, stroke=1, fill=0)
-        c.setFillColor(C_TEAL)
-        p = c.beginPath()
-        p.moveTo(cx - 3, cy + 1)
-        p.lineTo(cx + 3, cy + 1)
-        p.lineTo(cx, cy - 9)
-        p.close()
-        c.drawPath(p, stroke=0, fill=1)
-    elif kind == "trending":
-        # Upward arrow line
-        c.line(cx - 9, cy - 6, cx + 4, cy + 7)
-        c.line(cx - 1, cy + 7, cx + 4, cy + 7)
-        c.line(cx + 4, cy + 7, cx + 4, cy + 2)
-    c.setLineWidth(0.5)
-
-
-def stat_box(c, x, y, w, h, icon_kind, label, value_lines):
-    """White rounded stat card."""
-    c.setFillColor(C_WHITE)
-    c.setStrokeColor(colors.HexColor("#E2EAF0"))
-    c.setLineWidth(0.5)
-    c.roundRect(x, y, w, h, 12, stroke=1, fill=1)
-    # icon
-    draw_icon(c, x + w / 2, y + h - 42, icon_kind)
-    # label
-    c.setFillColor(C_MID)
-    c.setFont("Helvetica", 10)
-    c.drawCentredString(x + w / 2, y + h - 66, label)
-    # value
-    c.setFillColor(C_DARK)
-    c.setFont("Helvetica-Bold", 26)
-    if isinstance(value_lines, list):
-        line_h = 30
-        start_y = y + h / 2 - (len(value_lines) - 1) * line_h / 2 - 6
-        for i, vl in enumerate(value_lines):
-            c.drawCentredString(x + w / 2, start_y + (len(value_lines) - 1 - i) * line_h, vl)
-    else:
-        c.drawCentredString(x + w / 2, y + h / 2 - 14, value_lines)
-
-
-def wrap_text(c, text, x, y, max_w, font, size, leading, color=None):
-    """Simple word-wrap, returns final y."""
-    if color:
-        c.setFillColor(color)
-    c.setFont(font, size)
+def wrap_text(draw, text, x_pt, y_bot_pt, max_w_pt, img_h, size_pt,
+              bold=False, color=MID, leading_pt=22):
+    f   = font(bold, size_pt)
     words = text.split()
-    line = ""
+    line  = ""
+    y     = img_h - p(y_bot_pt) - p(size_pt)
     for w in words:
         test = (line + " " + w).strip()
-        if c.stringWidth(test, font, size) <= max_w:
+        bb   = f.getbbox(test)
+        if bb[2]-bb[0] <= p(max_w_pt):
             line = test
         else:
-            c.drawString(x, y, line)
-            y -= leading
+            if line:
+                draw.text((p(x_pt), y), line, font=f, fill=color)
+                y += p(leading_pt)
             line = w
     if line:
-        c.drawString(x, y, line)
-        y -= leading
-    return y
+        draw.text((p(x_pt), y), line, font=f, fill=color)
+
+# ── render CC pages ──────────────────────────────────────────────────────────
+
+def render_cc_pages():
+    subprocess.run(["pdftoppm", "-r", str(DPI), "-png", CC_PDF, "/tmp/zu_cc"],
+                   check=True, capture_output=True)
+    files = sorted(f for f in os.listdir("/tmp")
+                   if f.startswith("zu_cc-") and f.endswith(".png"))
+    return [np.array(Image.open(f"/tmp/{f}").convert("RGB")) for f in files]
+
+# ── page builders ─────────────────────────────────────────────────────────────
+
+def process_page1(arr, bg, img_h, img_w):
+    draw_arr = arr.copy()
+
+    # --- ERASE CC elements ---
+    # Header counter (replace "Workshop 1" with "Workshop 4")
+    # Header strip y_pdf=921-970 → at right side x_pdf=350-810
+    box_ctr = pdf_rect(350, 921, 460, 49, img_h)
+    # Fill with header gradient colours (match measured strip colours)
+    l, t, r, b = box_ctr
+    for row in range(t, b):
+        progress = (row - t) / max(b - t - 1, 1)  # 0=top of strip, 1=bottom
+        # top of strip (progress=0) = dark blue (59,86,141), bottom=teal (26,158,165)
+        rc = int(59  + progress * (26  - 59))
+        gc = int(86  + progress * (158 - 86))
+        bc = int(141 + progress * (165 - 141))
+        draw_arr[row, l:r] = [rc, gc, bc]
+
+    # CC logo + tagline: y_pdf=500-720, x_pdf=68-742
+    erase(draw_arr, bg, pdf_rect(68, 500, 674, 220, img_h))
+
+    # Date text above pill: y_pdf=375-465, x_pdf=178-632
+    erase(draw_arr, bg, pdf_rect(178, 375, 454, 90, img_h))
+
+    # Gradient pill: y_pdf=282-385, x_pdf=24-786
+    erase(draw_arr, bg, pdf_rect(24, 282, 762, 103, img_h))
+
+    # --- DRAW Zurich content ---
+    img = Image.fromarray(draw_arr)
+    draw = ImageDraw.Draw(img)
+
+    # Counter text: white "Workshop 4  ●  04 / 04" right-aligned
+    ctr_txt = "Workshop 4  ●  04 / 04"
+    f_ctr = font(False, 12)
+    bb = f_ctr.getbbox(ctr_txt)
+    cw = bb[2] - bb[0]
+    cx_right = p(762)
+    cy_ctr   = img_h - p(960) - p(12)
+    draw.text((cx_right - cw, cy_ctr), ctr_txt, font=f_ctr, fill=WHITE)
+
+    # Zurich logo
+    zu = Image.open(ZU_LOGO).convert("RGBA")
+    lh_pt = 140; lw_pt = lh_pt * zu.width / zu.height
+    lh_px = p(lh_pt); lw_px = p(lw_pt)
+    zu_rsz = zu.resize((lw_px, lh_px), Image.LANCZOS)
+    lx = (img_w - lw_px) // 2
+    ly = img_h - p(720) - lh_px   # logo top at pdf_y=860 from bottom
+    img.paste(zu_rsz, (lx, ly), zu_rsz)
+    draw = ImageDraw.Draw(img)
+
+    # Taglines
+    draw_text_centered(draw, "Globale Versicherungskompetenz.",
+                       405, 548, img_h, 22, bold=False, color=DARK)
+    draw_text_centered(draw, "Lokal verankert in Köln.",
+                       405, 522, img_h, 22, bold=False, color=DARK)
+
+    # Gradient pill (match CC pill at y_pdf=310-368, x=55-755, w=700)
+    draw_gradient_pill(draw, 55, 310, 700, 58, img_h,
+                       "MITTWOCH  |  08.07.2026  |  17:00 Uhr  |  Zurich – Office Köln",
+                       size_pt=12)
+
+    return np.array(img)
 
 
-# ── Page 1 · Cover ────────────────────────────────────────────────────────────
+def process_page2(arr, bg, img_h, img_w):
+    draw_arr = arr.copy()
 
-def page1(c):
-    bg(c)
-    header(c, 1, "Workshop 4")
+    # Header counter
+    box_ctr = pdf_rect(350, 921, 460, 49, img_h)
+    l, t, r, b = box_ctr
+    for row in range(t, b):
+        prog = (row - t) / max(b - t - 1, 1)
+        rc = int(59  + prog * (26  - 59))
+        gc = int(86  + prog * (158 - 86))
+        bc = int(141 + prog * (165 - 141))
+        draw_arr[row, l:r] = [rc, gc, bc]
 
-    # "PARTNERVORSTELLUNG" label
-    c.setFillColor(C_LABEL)
-    c.setFont("Helvetica-Bold", 12)
-    label = "PARTNERVORSTELLUNG"
-    label_w = c.stringWidth(label, "Helvetica-Bold", 12)
-    c.drawCentredString(PW / 2, PH - 175, label)
+    # Headline: y_pdf=732-808, x=40-754
+    erase(draw_arr, bg, pdf_rect(40, 732, 714, 76, img_h))
 
-    # Zurich logo centred
-    try:
-        img = ImageReader(ZU_LOGO)
-        iw, ih = img.getSize()
-        logo_h = 160
-        logo_w = logo_h * iw / ih
-        c.drawImage(ZU_LOGO, (PW - logo_w) / 2, PH - 390,
-                    width=logo_w, height=logo_h, mask='auto',
-                    preserveAspectRatio=True)
-    except Exception:
-        c.setFillColor(C_PRIMARY)
-        c.setFont("Helvetica-Bold", 64)
-        c.drawCentredString(PW / 2, PH - 350, "ZURICH")
+    # Body text: y_pdf=642-718, x=40-676
+    erase(draw_arr, bg, pdf_rect(40, 642, 636, 76, img_h))
 
-    # Tagline
-    c.setFillColor(C_DARK)
-    c.setFont("Helvetica", 24)
-    c.drawCentredString(PW / 2, PH - 480, "Globale Versicherungskompetenz.")
-    c.drawCentredString(PW / 2, PH - 510, "Lokal verankert in Köln.")
+    # Stats area: y_pdf=282-575, x=40-772
+    erase(draw_arr, bg, pdf_rect(40, 282, 732, 293, img_h))
 
-    # Gradient event pill
-    pill_text = "MITTWOCH   08.07.2026  ·  17:00 Uhr  ·  Zurich – Office Köln"
-    pill_w, pill_h = 680, 50
-    pill_x = (PW - pill_w) / 2
-    gradient_pill(c, pill_x, PH - 640, pill_w, pill_h, pill_text, fsize=14)
+    img  = Image.fromarray(draw_arr)
+    draw = ImageDraw.Draw(img)
 
-    footer(c)
+    # Counter
+    ctr_txt = "Das Unternehmen  ●  02 / 04"
+    f_ctr = font(False, 12)
+    bb = f_ctr.getbbox(ctr_txt)
+    draw.text((p(762)-bb[2]+bb[0], img_h-p(960)-p(12)),
+              ctr_txt, font=f_ctr, fill=WHITE)
 
+    # Headline: "Weltklasse trifft Köln."
+    f_h = font(True, 54)
+    part1 = "Weltklasse trifft "
+    part2 = "Köln."
+    w1 = text_width(part1, 54, bold=True)
+    y_h = img_h - p(757) - p(54)
+    draw.text((p(48), y_h), part1, font=f_h, fill=DARK)
+    draw.text((p(48)+w1, y_h), part2, font=f_h,
+              fill=(44,217,195))
 
-# ── Page 2 · Das Unternehmen ──────────────────────────────────────────────────
+    # Body text
+    body = ("Die Zurich Insurance Group zählt zu den führenden Versicherern "
+            "weltweit. In Deutschland begleitet Zurich seit über 100 Jahren "
+            "Privat- und Geschäftskunden mit ganzheitlichen Lösungen in "
+            "Schaden-, Unfall- und Lebensversicherung – nachhaltig, digital "
+            "und zukunftsorientiert.")
+    wrap_text(draw, body, 48, 700, 714, img_h, 15, color=MID)
 
-def page2(c):
-    bg(c)
-    header(c, 2, "Das Unternehmen")
-
-    # Headline: "Weltklasse trifft [Teal]Köln."
-    c.setFillColor(C_DARK)
-    c.setFont("Helvetica-Bold", 58)
-    w1 = c.stringWidth("Weltklasse trifft ", "Helvetica-Bold", 58)
-    c.drawString(48, PH - 185, "Weltklasse trifft ")
-    gradient_word_approx(c, 48 + w1, PH - 185, "Köln.", "Helvetica-Bold", 58)
-
-    # Body paragraph
-    body = (
-        "Die Zurich Insurance Group zählt zu den führenden Versicherern weltweit. "
-        "In Deutschland ist Zurich seit über 100 Jahren aktiv und begleitet "
-        "Privat- und Geschäftskunden mit ganzheitlichen Lösungen in Schaden-, "
-        "Unfall- und Lebensversicherung – nachhaltig, digital und zukunftsorientiert."
-    )
-    wrap_text(c, body, 48, PH - 260, PW - 96, "Helvetica", 16, 24,
-              color=C_MID)
-
-    # 2×2 stat grid
-    gx, gy = 48, PH - 700
-    bw = (PW - 96 - 20) / 2
-    bh = 180
+    # 4 stat boxes (2×2 grid)
+    bw = (714 - 20) / 2   # ≈ 347 pt
+    bh = 130
+    gx, gy = 48, 300
     gap = 20
+    draw_stat_box(draw, img, gx,          gy+bh+gap, bw, bh, img_h,
+                  "GEGRÜNDET",    "1872")
+    draw_stat_box(draw, img, gx+bw+gap,   gy+bh+gap, bw, bh, img_h,
+                  "MITARBEITENDE","~55.000")
+    draw_stat_box(draw, img, gx,          gy,         bw, bh, img_h,
+                  "HAUPTSITZ",    ["Zürich (CH)", "Köln (DE)"])
+    draw_stat_box(draw, img, gx+bw+gap,   gy,         bw, bh, img_h,
+                  "SCHWERPUNKTE", ["Schaden/Unfall", "Leben & Alters-", "vorsorge"])
 
-    stat_box(c, gx,             gy + bh + gap, bw, bh, "calendar", "GEGRÜNDET",    "1872")
-    stat_box(c, gx + bw + gap, gy + bh + gap, bw, bh, "people",   "MITARBEITENDE", "~ 55.000")
-    stat_box(c, gx,             gy,            bw, bh, "location", "HAUPTSITZ",
-             ["Zürich (CH)", "Köln (DE)"])
-    stat_box(c, gx + bw + gap, gy,            bw, bh, "trending",  "SCHWERPUNKTE",
-             ["Schaden/Unfall", "Lebensversicherung", "Industrie"])
-
-    footer(c)
-
-
-# ── Page 3 · Die Speaker ──────────────────────────────────────────────────────
-
-def page3(c):
-    bg(c)
-    header(c, 3, "Die Speaker")
-
-    # Headline "Eure [Teal]Speaker"
-    c.setFillColor(C_DARK)
-    c.setFont("Helvetica-Bold", 58)
-    w1 = c.stringWidth("Eure ", "Helvetica-Bold", 58)
-    c.drawString(48, PH - 185, "Eure ")
-    gradient_word_approx(c, 48 + w1, PH - 185, "Speaker", "Helvetica-Bold", 58)
-
-    # ── Two speaker cards ──
-    cw = (PW - 96 - 20) / 2
-    ch = 230
-    cy = PH - 460
-
-    def speaker_card(cx, initials, name, role):
-        c.setFillColor(C_WHITE)
-        c.setStrokeColor(colors.HexColor("#E2EAF0"))
-        c.setLineWidth(0.5)
-        c.roundRect(cx, cy, cw, ch, 12, stroke=1, fill=1)
-        # avatar circle
-        av_r = 34
-        av_cx = cx + cw / 2
-        av_cy = cy + ch - 60
-        c.setFillColor(colors.HexColor("#D6EAF2"))
-        c.circle(av_cx, av_cy, av_r, fill=1, stroke=0)
-        c.setFillColor(C_PRIMARY)
-        c.setFont("Helvetica-Bold", 18)
-        c.drawCentredString(av_cx, av_cy - 8, initials)
-        # Name
-        c.setFillColor(C_DARK)
-        c.setFont("Helvetica-Bold", 16)
-        c.drawCentredString(cx + cw / 2, cy + ch - 118, name)
-        # Role
-        c.setFillColor(C_MID)
-        c.setFont("Helvetica-Oblique", 12)
-        c.drawCentredString(cx + cw / 2, cy + ch - 140, role)
-        # Company
-        c.setFillColor(C_TEAL)
-        c.setFont("Helvetica-Bold", 12)
-        c.drawCentredString(cx + cw / 2, cy + ch - 162, "Zurich Insurance")
-        # Location
-        # location pin + KÖLN
-        pin_lbl = "KOLN"
-        pin_w = c.stringWidth(pin_lbl, "Helvetica", 11) + 18
-        pin_x = cx + cw / 2 - pin_w / 2
-        c.saveState()
-        c.setStrokeColor(C_MID); c.setFillColor(C_MID); c.setLineWidth(1.0)
-        draw_icon(c, pin_x + 7, cy + ch - 179, "location")
-        c.restoreState()
-        c.setFillColor(C_MID)
-        c.setFont("Helvetica", 11)
-        c.drawString(pin_x + 18, cy + ch - 183, pin_lbl)
-
-    speaker_card(48,          "NN", "[Vorname Nachname]", "[Funktion]")
-    speaker_card(48 + cw + 20, "NN", "[Vorname Nachname]", "[Funktion]")
-
-    # ── HR contact row ──
-    hr_y = cy - 74
-    hr_h = 54
-    c.setFillColor(C_WHITE)
-    c.setStrokeColor(colors.HexColor("#E2EAF0"))
-    c.setLineWidth(0.5)
-    c.roundRect(48, hr_y, PW - 96, hr_h, 10, stroke=1, fill=1)
-    # HR avatar
-    c.setFillColor(colors.HexColor("#D6EAF2"))
-    c.circle(48 + 28, hr_y + hr_h / 2, 20, fill=1, stroke=0)
-    c.setFillColor(C_PRIMARY)
-    c.setFont("Helvetica-Bold", 10)
-    c.drawCentredString(48 + 28, hr_y + hr_h / 2 - 4, "HR")
-    # HR name + title
-    c.setFillColor(C_DARK)
-    c.setFont("Helvetica-Bold", 13)
-    c.drawString(48 + 58, hr_y + hr_h / 2 + 4, "[Ansprechpartner:in Karriere]")
-    c.setFillColor(C_MID)
-    c.setFont("Helvetica", 11)
-    c.drawString(48 + 58, hr_y + hr_h / 2 - 14, "Ansprechpartner:in Karriere · Zurich Insurance")
-    # HR badge right
-    badge_w, badge_h = 36, 22
-    badge_x = PW - 48 - badge_w - 12
-    badge_y = hr_y + (hr_h - badge_h) / 2
-    c.setFillColor(C_PRIMARY)
-    c.roundRect(badge_x, badge_y, badge_w, badge_h, 5, stroke=0, fill=1)
-    c.setFillColor(C_WHITE)
-    c.setFont("Helvetica-Bold", 9)
-    c.drawCentredString(badge_x + badge_w / 2, badge_y + 6, "HR")
-
-    # ── Bottom info bar (gradient) ──
-    bar_h = 52
-    bar_y = hr_y - 72
-    bar_w = PW - 96
-    # gradient fill
-    steps = 60
-    p = c.beginPath()
-    p.roundRect(48, bar_y, bar_w, bar_h, 10)
-    c.saveState()
-    c.clipPath(p, stroke=0, fill=0)
-    for i in range(steps):
-        t = i / steps
-        r = C_PRIMARY.red   + t * (C_TEAL.red   - C_PRIMARY.red)
-        g = C_PRIMARY.green + t * (C_TEAL.green - C_PRIMARY.green)
-        b = C_PRIMARY.blue  + t * (C_TEAL.blue  - C_PRIMARY.blue)
-        c.setFillColorRGB(r, g, b)
-        c.rect(48 + i * bar_w / steps, bar_y, bar_w / steps + 1, bar_h, stroke=0, fill=1)
-    c.restoreState()
-    # three columns
-    col_w = bar_w / 3
-    col_icons   = ["trending", "people", "calendar"]
-    col_labels  = ["THEMA", "FORMAT", "ANSCHLUSS"]
-    col_values  = ["[Thema folgt in Kurze]", "Interaktiver Workshop", "Networking-Dinner"]
-    for i in range(3):
-        cx = 48 + i * col_w + col_w / 2
-        c.setFillColor(colors.HexColor("#FFFFFFAA"))
-        c.setFont("Helvetica-Bold", 9)
-        c.drawCentredString(cx, bar_y + bar_h - 18, col_labels[i])
-        # small white icon drawn at bar_y+20
-        c.saveState()
-        c.setFillColor(C_WHITE)
-        c.setStrokeColor(C_WHITE)
-        c.setLineWidth(1.2)
-        draw_icon(c, cx - c.stringWidth(col_values[i], "Helvetica-Bold", 12)/2 - 10,
-                  bar_y + 16, col_icons[i])
-        c.restoreState()
-        c.setFillColor(C_WHITE)
-        c.setFont("Helvetica-Bold", 12)
-        c.drawCentredString(cx + 6, bar_y + 12, col_values[i])
-    # vertical dividers
-    c.setStrokeColor(colors.HexColor("#FFFFFF50"))
-    c.setLineWidth(0.8)
-    for i in [1, 2]:
-        dx = 48 + i * col_w
-        c.line(dx, bar_y + 8, dx, bar_y + bar_h - 8)
-
-    footer(c)
+    return np.array(img)
 
 
-# ── Page 4 · Jetzt anmelden ───────────────────────────────────────────────────
+def process_page3(arr, bg, img_h, img_w):
+    draw_arr = arr.copy()
 
-def page4(c):
-    bg(c)
-    header(c, 4, "Jetzt anmelden")
+    # Header counter
+    box_ctr = pdf_rect(350, 921, 460, 49, img_h)
+    l, t, r, b = box_ctr
+    for row in range(t, b):
+        prog = (row - t) / max(b - t - 1, 1)
+        rc = int(59  + prog * (26  - 59))
+        gc = int(86  + prog * (158 - 86))
+        bc = int(141 + prog * (165 - 141))
+        draw_arr[row, l:r] = [rc, gc, bc]
 
-    # "BEREIT FÜR DEN WORKSHOP?"
-    c.setFillColor(C_LABEL)
-    c.setFont("Helvetica-Bold", 12)
-    c.drawCentredString(PW / 2, PH - 195, "BEREIT FÜR DEN WORKSHOP?")
+    # Speaker cards: y_pdf=490-714, x=112-766
+    erase(draw_arr, bg, pdf_rect(112, 490, 654, 224, img_h))
 
-    # "Jetzt" plain dark
-    c.setFillColor(C_DARK)
-    c.setFont("Helvetica-Bold", 82)
-    c.drawCentredString(PW / 2, PH - 298, "Jetzt")
+    # HR row: y_pdf=466-502, x=186-626
+    erase(draw_arr, bg, pdf_rect(186, 466, 440, 36, img_h))
 
-    # "bewerben." in teal (gradient approximation)
-    c.setFillColor(C_TEAL)
-    c.setFont("Helvetica-Bold", 82)
-    c.drawCentredString(PW / 2, PH - 390, "bewerben.")
+    # Info bar: y_pdf=416-468, x=158-650
+    erase(draw_arr, bg, pdf_rect(158, 416, 492, 52, img_h))
 
-    # Body text – two centred lines matching CrossConsulting layout
-    c.setFillColor(C_DARK)
-    c.setFont("Helvetica", 17)
-    c.drawCentredString(PW / 2, PH - 488,
-                        "Sichere dir deinen Platz beim Workshop bei")
-    # bold company name inline
-    line2_parts = [("Zurich", True), (" – begrenzte Platze, Bewerbung in wenigen Minuten.", False)]
-    total = sum(c.stringWidth(t, "Helvetica-Bold" if b else "Helvetica", 17)
-                for t, b in line2_parts)
-    lx = PW / 2 - total / 2
-    for txt, bold in line2_parts:
-        fn = "Helvetica-Bold" if bold else "Helvetica"
-        c.setFont(fn, 17)
-        c.drawString(lx, PH - 516, txt)
-        lx += c.stringWidth(txt, fn, 17)
+    img  = Image.fromarray(draw_arr)
+    draw = ImageDraw.Draw(img)
 
-    # CTA pill button
-    gradient_pill(c, (PW - 480) / 2, PH - 640, 480, 56,
-                  "→  nextgenforum.de/jetzt-bewerben", fsize=16)
+    # Counter
+    ctr_txt = "Die Speaker  ●  03 / 04"
+    f_ctr = font(False, 12)
+    bb = f_ctr.getbbox(ctr_txt)
+    draw.text((p(762)-(bb[2]-bb[0]), img_h-p(960)-p(12)),
+              ctr_txt, font=f_ctr, fill=WHITE)
 
-    # Date + location row
-    c.setFillColor(C_MID)
-    c.setFont("Helvetica", 13)
-    info = "Mi  08.07.2026  17:00 Uhr    Zurich Office Koln"
-    row_y = PH - 730
-    # draw two small icons + text
-    full = "Mi · 08.07.2026 · 17:00 Uhr"
-    loc  = "Zurich Office Koln"
-    total_w = (c.stringWidth(full, "Helvetica", 13) + 28 +
-               8 +
-               c.stringWidth(loc,  "Helvetica", 13) + 28)
-    sx = PW / 2 - total_w / 2
-    # calendar icon
-    c.saveState()
-    c.setStrokeColor(C_MID); c.setFillColor(C_MID); c.setLineWidth(1.2)
-    draw_icon(c, sx + 8, row_y + 5, "calendar")
-    c.restoreState()
-    c.setFillColor(C_MID)
-    c.setFont("Helvetica", 13)
-    c.drawString(sx + 22, row_y, full)
-    sep_x = sx + 22 + c.stringWidth(full, "Helvetica", 13) + 12
-    c.drawString(sep_x, row_y, "·")
-    loc_x = sep_x + 16
-    c.saveState()
-    c.setStrokeColor(C_MID); c.setFillColor(C_MID); c.setLineWidth(1.2)
-    draw_icon(c, loc_x + 8, row_y + 5, "location")
-    c.restoreState()
-    c.setFillColor(C_MID)
-    c.drawString(loc_x + 22, row_y, loc)
+    # Speaker cards (2 placeholder cards side by side)
+    cw = (654 - 20) / 2   # ≈ 317 pt
+    ch = 218
+    draw_speaker_card(draw, 112,          490, cw, ch, img_h,
+                      "NN", "[Vorname Nachname]", "[Funktion]")
+    draw_speaker_card(draw, 112+cw+20,    490, cw, ch, img_h,
+                      "NN", "[Vorname Nachname]", "[Funktion]")
 
-    footer(c)
+    # HR row
+    hr_x, hr_y, hr_w, hr_h = 186, 470, 438, 48
+    x0=p(hr_x); y0=img_h-p(hr_y+hr_h); x1=p(hr_x+hr_w); y1=img_h-p(hr_y)
+    draw.rounded_rectangle([x0,y0,x1,y1], radius=p(8),
+                            fill=WHITE, outline=(226,234,240), width=1)
+    av_r=p(18); av_cx=x0+p(26); av_cy=(y0+y1)//2
+    draw.ellipse([av_cx-av_r, av_cy-av_r, av_cx+av_r, av_cy+av_r],
+                 fill=(214,234,242))
+    f_hr=font(True,9); draw.text((av_cx-p(5), av_cy-p(6)), "HR",
+                                  font=f_hr, fill=PRIMARY)
+    f_name=font(True,12)
+    draw.text((av_cx+p(22), av_cy-p(10)), "[Ansprechpartner:in Karriere]",
+              font=f_name, fill=DARK)
+    f_sub=font(False,10)
+    draw.text((av_cx+p(22), av_cy+p(4)), "Ansprechpartner:in Karriere · Zurich Insurance",
+              font=f_sub, fill=MID)
+
+    # Info bar (gradient)
+    draw_gradient_pill(draw, 158, 418, 492, 44, img_h, "", size_pt=11, r_pt=8)
+    cols = [("THEMA","[Thema folgt]"), ("FORMAT","Workshop"), ("ANSCHLUSS","Networking")]
+    col_w = 492 / 3
+    for i, (lbl, val) in enumerate(cols):
+        cx_pt = 158 + col_w*(i+0.5)
+        f_l = font(True, 9)
+        f_v = font(True, 11)
+        bb_l = f_l.getbbox(lbl); bb_v = f_v.getbbox(val)
+        cx_px = p(cx_pt)
+        draw.text((cx_px-(bb_l[2]-bb_l[0])//2, img_h-p(418+44)+p(6)),
+                  lbl, font=f_l, fill=(200,235,235))
+        draw.text((cx_px-(bb_v[2]-bb_v[0])//2, img_h-p(418+44)+p(22)),
+                  val, font=f_v, fill=WHITE)
+
+    return np.array(img)
 
 
-# ── Generate ──────────────────────────────────────────────────────────────────
+def process_page4(arr, bg, img_h, img_w):
+    draw_arr = arr.copy()
 
-cv = canvas.Canvas(OUTPUT, pagesize=(PW, PH))
-cv.setTitle("Partnervorstellung – Zurich | NextGen Insurance Forum e.V.")
-cv.setAuthor("NextGen Insurance Forum e.V.")
+    # Header counter
+    box_ctr = pdf_rect(350, 921, 460, 49, img_h)
+    l, t, r, b = box_ctr
+    for row in range(t, b):
+        prog = (row - t) / max(b - t - 1, 1)
+        rc = int(59  + prog * (26  - 59))
+        gc = int(86  + prog * (158 - 86))
+        bc = int(141 + prog * (165 - 141))
+        draw_arr[row, l:r] = [rc, gc, bc]
 
-page1(cv); cv.showPage()
-page2(cv); cv.showPage()
-page3(cv); cv.showPage()
-page4(cv); cv.showPage()
+    # Body text: y_pdf=393-485, x=146-665
+    erase(draw_arr, bg, pdf_rect(146, 393, 519, 92, img_h))
 
-cv.save()
-print(f"✓ PDF gespeichert → {OUTPUT}")
+    # Date bar: y_pdf=321-385, x=1-646
+    erase(draw_arr, bg, pdf_rect(1, 321, 645, 64, img_h))
+
+    img  = Image.fromarray(draw_arr)
+    draw = ImageDraw.Draw(img)
+
+    # Counter
+    ctr_txt = "Jetzt anmelden  ●  04 / 04"
+    f_ctr = font(False, 12)
+    bb = f_ctr.getbbox(ctr_txt)
+    draw.text((p(762)-(bb[2]-bb[0]), img_h-p(960)-p(12)),
+              ctr_txt, font=f_ctr, fill=WHITE)
+
+    # Body text (replace CC company name)
+    draw_text_centered(draw, "Sichere dir deinen Platz beim Workshop bei",
+                       405, 462, img_h, 16, color=DARK)
+    # Line 2: "Zurich Insurance" bold + rest normal
+    part1 = "Zurich Insurance"
+    part2 = " – begrenzte Plätze, Bewerbung in wenigen Minuten."
+    w1 = text_width(part1, 16, bold=True)
+    w2 = text_width(part2, 16, bold=False)
+    sx = p(405) - (w1+w2)//2
+    y_l2 = img_h - p(438) - p(16)
+    draw.text((sx,    y_l2), part1, font=font(True,  16), fill=DARK)
+    draw.text((sx+w1, y_l2), part2, font=font(False, 16), fill=DARK)
+
+    # Date bar (gradient pill)
+    draw_gradient_pill(draw, 5, 323, 640, 58, img_h,
+                       "Mi  ·  08.07.2026  ·  17:00 Uhr  ·  Zurich – Office Köln",
+                       size_pt=13)
+
+    return np.array(img)
+
+
+# ── main ──────────────────────────────────────────────────────────────────────
+
+print("Rendering CC pages…")
+cc_pages = render_cc_pages()
+print(f"  {len(cc_pages)} pages, {cc_pages[0].shape[1]}×{cc_pages[0].shape[0]} px")
+
+print("Computing Gaussian backgrounds…")
+bg_arrays = [gaussian_bg(p_arr) for p_arr in cc_pages]
+
+img_h = cc_pages[0].shape[0]
+img_w = cc_pages[0].shape[1]
+
+processors = [process_page1, process_page2, process_page3, process_page4]
+out_pages  = []
+for i, (proc, pg, bg) in enumerate(zip(processors, cc_pages, bg_arrays)):
+    print(f"  Processing page {i+1}…")
+    out_pages.append(proc(pg, bg, img_h, img_w))
+
+# ── compile to PDF ────────────────────────────────────────────────────────────
+
+print("Compiling PDF…")
+PW, PH = 810, 1013.04
+buf = io.BytesIO()
+c   = rl_canvas.Canvas(buf, pagesize=(PW, PH))
+
+for i, page_arr in enumerate(out_pages):
+    tmp = f"/tmp/zurich_out_{i+1}.png"
+    Image.fromarray(page_arr).save(tmp, optimize=False)
+    c.drawImage(tmp, 0, 0, width=PW, height=PH)
+    c.showPage()
+
+c.save()
+with open(OUTPUT, "wb") as f:
+    f.write(buf.getvalue())
+
+print(f"✓  Gespeichert → {OUTPUT}")
