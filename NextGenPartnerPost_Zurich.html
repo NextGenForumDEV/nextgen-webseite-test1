@@ -18,7 +18,7 @@
 body { font-family: 'Inter', Arial, Helvetica, sans-serif; }
 
 /* ─── SHARED BACKGROUND ────────────────────────────────── */
-/* Matches the original: light teal→white gradient + subtle 45° diagonal lines */
+/* Exact background extracted directly from original PDFs (circle decorations + gradient) */
 .slide {
   width: 1080px;
   height: 1350px;
@@ -26,24 +26,9 @@ body { font-family: 'Inter', Arial, Helvetica, sans-serif; }
   display: flex;
   flex-direction: column;
   padding: 52px 64px 44px;
-  background-color: #cce4ef;
-  background-image:
-    repeating-linear-gradient(
-      135deg,
-      transparent 0px,
-      transparent 14px,
-      rgba(255,255,255,0.13) 14px,
-      rgba(255,255,255,0.13) 15px
-    ),
-    linear-gradient(175deg,
-      #a8cfe3 0%,
-      #bddaec 12%,
-      #cce4f0 28%,
-      #d8ecf5 45%,
-      #e4f2f8 62%,
-      #eef8fb 78%,
-      #f4fbfd 100%
-    );
+  background-image: url('./src/images/slide_background.png');
+  background-size: 1080px 1350px;
+  background-repeat: no-repeat;
 }
 .slide:last-child { page-break-after: avoid; }
 
