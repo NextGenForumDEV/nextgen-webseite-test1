@@ -192,8 +192,6 @@
                                 <span class="material-symbols-outlined" style="font-size: 2rem;">fact_check</span>
                             </div>
                             <div class="flex-1">
-                                <p class="text-xs font-bold uppercase tracking-widest text-[#0E4B94] dark:text-[#2CD9C3] mb-2">
-                                    Leistung 01</p>
                                 <h2 class="text-2xl font-bold mb-3 text-black dark:text-white">Kostenloser CV-Check
                                 </h2>
                                 <p class="text-gray-600 dark:text-gray-300 leading-relaxed mb-5">
@@ -215,8 +213,6 @@
                                 <span class="material-symbols-outlined" style="font-size: 2rem;">handshake</span>
                             </div>
                             <div class="flex-1">
-                                <p class="text-xs font-bold uppercase tracking-widest text-[#0E4B94] dark:text-[#2CD9C3] mb-2">
-                                    Leistung 02</p>
                                 <h2 class="text-2xl font-bold mb-3 text-black dark:text-white">Pro-Bono-Beratung</h2>
                                 <p class="text-gray-600 dark:text-gray-300 leading-relaxed mb-5">
                                     Du stehst vor einer beruflichen Entscheidung oder möchtest dich zu deinem Weg in
@@ -224,9 +220,9 @@
                                     Branchenkontakten berät dich unentgeltlich und auf Augenhöhe – vertraulich und
                                     ohne Verpflichtungen.
                                 </p>
-                                <a href="mailto:info@nextgenforum.de?subject=Anfrage%20Pro-Bono-Beratung"
+                                <button type="button" onclick="openServiceModal('probono')"
                                     class="inline-flex h-11 items-center justify-center rounded-lg bg-gradient-to-r from-[#0E4B94] to-[#2CD9C3] px-6 text-sm font-bold text-white transition-transform hover:scale-105 shadow-md">
-                                    Beratung anfragen</a>
+                                    Beratung anfragen</button>
                             </div>
                         </div>
 
@@ -237,8 +233,6 @@
                                 <span class="material-symbols-outlined" style="font-size: 2rem;">rocket_launch</span>
                             </div>
                             <div class="flex-1">
-                                <p class="text-xs font-bold uppercase tracking-widest text-[#0E4B94] dark:text-[#2CD9C3] mb-2">
-                                    Leistung 03</p>
                                 <h2 class="text-2xl font-bold mb-3 text-black dark:text-white">Karriere-Support</h2>
                                 <p class="text-gray-600 dark:text-gray-300 leading-relaxed mb-5">
                                     Von der Orientierung im Studium über die Bewerbung bis zum Berufseinstieg: Wir
@@ -246,9 +240,9 @@
                                     Kontakt zu passenden Ansprechpersonen aus der Branche her. Melde dich einfach mit
                                     deinem Anliegen.
                                 </p>
-                                <a href="mailto:info@nextgenforum.de?subject=Anfrage%20Karriere-Support"
+                                <button type="button" onclick="openServiceModal('support')"
                                     class="inline-flex h-11 items-center justify-center rounded-lg bg-gradient-to-r from-[#0E4B94] to-[#2CD9C3] px-6 text-sm font-bold text-white transition-transform hover:scale-105 shadow-md">
-                                    Kontakt aufnehmen</a>
+                                    Kontakt aufnehmen</button>
                             </div>
                         </div>
 
@@ -259,8 +253,6 @@
                                 <span class="material-symbols-outlined" style="font-size: 2rem;">school</span>
                             </div>
                             <div class="flex-1">
-                                <p class="text-xs font-bold uppercase tracking-widest text-[#0E4B94] dark:text-[#2CD9C3] mb-2">
-                                    Leistung 04</p>
                                 <h2 class="text-2xl font-bold mb-3 text-black dark:text-white">Förderung von
                                     Abschlussarbeiten</h2>
                                 <p class="text-gray-600 dark:text-gray-300 leading-relaxed mb-5">
@@ -269,9 +261,9 @@
                                     stimmen wir individuell mit dir ab. Stell uns einfach eine formlose Anfrage mit
                                     ein paar Eckdaten zu deinem Thema.
                                 </p>
-                                <a href="mailto:info@nextgenforum.de?subject=Anfrage%20F%C3%B6rderung%20Abschlussarbeit"
+                                <button type="button" onclick="openServiceModal('thesis')"
                                     class="inline-flex h-11 items-center justify-center rounded-lg bg-gradient-to-r from-[#0E4B94] to-[#2CD9C3] px-6 text-sm font-bold text-white transition-transform hover:scale-105 shadow-md">
-                                    Anfrage stellen</a>
+                                    Anfrage stellen</button>
                             </div>
                         </div>
 
@@ -385,6 +377,13 @@
                                     <input type="file" id="cv-check-file" accept=".pdf,.doc,.docx" required
                                         class="sr-only">
                                     <p id="cv-check-file-error" class="hidden text-red-500 text-sm mt-2"></p>
+                                </div>
+                                <div>
+                                    <label for="cv-check-name"
+                                        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Dein
+                                        Name</label>
+                                    <input type="text" id="cv-check-name" required
+                                        class="w-full px-4 h-12 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2CD9C3] dark:text-white transition-all">
                                 </div>
                                 <div>
                                     <label for="cv-check-email"
@@ -501,6 +500,7 @@
                                             method: 'POST',
                                             headers: { 'Content-Type': 'application/json' },
                                             body: JSON.stringify({
+                                                name: document.getElementById('cv-check-name').value,
                                                 email: document.getElementById('cv-check-email').value,
                                                 privacy: document.getElementById('cv-check-privacy').checked,
                                                 cv: {
@@ -539,6 +539,158 @@
                         document.getElementById('cv-check-modal').addEventListener('click', function (e) {
                             if (e.target === this) {
                                 closeCvCheckModal();
+                            }
+                        });
+                    </script>
+                </div>
+            </div>
+
+        
+            <!-- Service-Anfrage Modal (Pro-Bono, Karriere-Support, Abschlussarbeit) -->
+            <div id="service-modal"
+                class="fixed inset-0 z-[100] hidden bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+                <div
+                    class="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl w-full max-w-xl max-h-[90vh] overflow-y-auto p-6 md:p-8 relative text-left">
+                    <button onclick="closeServiceModal()"
+                        class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-white transition-colors">
+                        <span class="material-symbols-outlined" style="font-size: 2rem;">close</span>
+                    </button>
+
+                    <h2 id="service-modal-title"
+                        class="text-3xl font-extrabold bg-gradient-to-r from-[#0E4B94] to-[#2CD9C3] bg-clip-text text-transparent mb-2">
+                        Anfrage stellen</h2>
+                    <p id="service-modal-subtitle" class="text-sm text-gray-600 dark:text-gray-300 mb-6"></p>
+
+                    <form id="service-form" class="space-y-6">
+                        <input type="hidden" id="service-key" value="">
+                        <div>
+                            <label for="service-name"
+                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Dein
+                                Name</label>
+                            <input type="text" id="service-name" required
+                                class="w-full px-4 h-12 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2CD9C3] dark:text-white transition-all">
+                        </div>
+                        <div>
+                            <label for="service-email"
+                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Deine
+                                E-Mail-Adresse</label>
+                            <input type="email" id="service-email" required
+                                class="w-full px-4 h-12 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2CD9C3] dark:text-white transition-all">
+                        </div>
+                        <div>
+                            <label for="service-message"
+                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Dein
+                                Anliegen</label>
+                            <textarea id="service-message" rows="5" required
+                                class="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2CD9C3] dark:text-white transition-all resize-y"></textarea>
+                        </div>
+                        <div class="flex items-start">
+                            <input id="service-privacy" type="checkbox" required
+                                class="h-4 w-4 rounded border-gray-300 text-[#0E4B94] focus:ring-[#2CD9C3] mt-1 flex-shrink-0">
+                            <label for="service-privacy"
+                                class="ml-3 text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+                                Ich stimme der Verarbeitung meiner Daten zur Bearbeitung meiner Anfrage gemäß der
+                                <a href="datenschutzerklarung.html" target="_blank"
+                                    class="text-primary underline">Datenschutzerklärung</a> zu.
+                            </label>
+                        </div>
+                        <div class="pt-2">
+                            <button type="submit"
+                                class="w-full h-14 bg-gradient-to-r from-[#0E4B94] to-[#2CD9C3] text-white font-bold rounded-lg hover:scale-[1.02] transition-transform shadow-lg">Anfrage
+                                absenden</button>
+                        </div>
+                        <p id="service-status" class="text-center text-sm hidden"></p>
+                    </form>
+                    <div id="success-container-service"
+                        class="hidden flex-col items-center justify-center text-center py-6">
+                        <div
+                            class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4 border-4 border-green-200 animate-scale-in">
+                            <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path class="animate-draw-check" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="3" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-green-600 dark:text-green-400 mb-2">Anfrage eingegangen!
+                        </h3>
+                        <p class="text-gray-600 dark:text-gray-300">Danke für deine Nachricht. Wir melden uns
+                            innerhalb weniger Tage per E-Mail bei dir.</p>
+                    </div>
+                    <script>
+                        const SERVICE_CONFIG = {
+                            probono: {
+                                title: 'Pro-Bono-Beratung anfragen',
+                                subtitle: 'Beschreibe kurz dein Anliegen – wir melden uns vertraulich bei dir.'
+                            },
+                            support: {
+                                title: 'Karriere-Support anfragen',
+                                subtitle: 'Sag uns, wobei wir dich unterstützen können – von Bewerbung bis Berufseinstieg.'
+                            },
+                            thesis: {
+                                title: 'Förderung für deine Abschlussarbeit anfragen',
+                                subtitle: 'Nenne uns ein paar Eckdaten zu deinem Thema – wir stimmen alles Weitere individuell mit dir ab.'
+                            }
+                        };
+                        const serviceForm = document.getElementById('service-form');
+                        const serviceSuccess = document.getElementById('success-container-service');
+                        const serviceStatus = document.getElementById('service-status');
+
+                        function openServiceModal(key) {
+                            const cfg = SERVICE_CONFIG[key];
+                            if (!cfg) return;
+                            document.getElementById('service-key').value = key;
+                            document.getElementById('service-modal-title').innerText = cfg.title;
+                            document.getElementById('service-modal-subtitle').innerText = cfg.subtitle;
+                            serviceForm.reset();
+                            document.getElementById('service-key').value = key;
+                            serviceForm.classList.remove('hidden');
+                            serviceSuccess.classList.add('hidden');
+                            serviceSuccess.classList.remove('flex');
+                            serviceStatus.classList.add('hidden');
+                            document.getElementById('service-modal').classList.remove('hidden');
+                            document.body.style.overflow = 'hidden';
+                        }
+                        function closeServiceModal() {
+                            document.getElementById('service-modal').classList.add('hidden');
+                            document.body.style.overflow = '';
+                        }
+                        document.getElementById('service-modal').addEventListener('click', function (e) {
+                            if (e.target === this) closeServiceModal();
+                        });
+
+                        serviceForm.addEventListener('submit', async function (e) {
+                            e.preventDefault();
+                            const submitBtn = serviceForm.querySelector('button[type="submit"]');
+                            const originalText = submitBtn.innerText;
+                            submitBtn.disabled = true;
+                            submitBtn.innerText = 'Wird gesendet...';
+                            submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                            serviceStatus.classList.add('hidden');
+                            try {
+                                const response = await fetch('/api/service-request', {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({
+                                        service: document.getElementById('service-key').value,
+                                        name: document.getElementById('service-name').value,
+                                        email: document.getElementById('service-email').value,
+                                        message: document.getElementById('service-message').value,
+                                        privacy: document.getElementById('service-privacy').checked
+                                    })
+                                });
+                                if (!response.ok) throw new Error('Serverfehler');
+                                serviceForm.classList.add('hidden');
+                                serviceSuccess.classList.remove('hidden');
+                                serviceSuccess.classList.add('flex');
+                            } catch (error) {
+                                console.error('Service request error:', error);
+                                serviceStatus.innerText = 'Leider gab es ein Problem beim Senden. Bitte versuche es später erneut oder schreibe uns an info@nextgenforum.de.';
+                                serviceStatus.classList.remove('hidden');
+                                serviceStatus.classList.add('text-red-500');
+                            } finally {
+                                submitBtn.disabled = false;
+                                submitBtn.innerText = originalText;
+                                submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
                             }
                         });
                     </script>

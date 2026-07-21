@@ -5,11 +5,14 @@ module.exports = async (req, res) => {
         return res.status(405).json({ error: 'Method not allowed' });
     }
 
-    const { email, privacy, cv } = req.body;
+    const { name, email, privacy, cv } = req.body;
 
-    if (!email || !privacy || !cv || !cv.filename || !cv.content) {
+    if (!name || !email || !privacy || !cv || !cv.filename || !cv.content) {
         return res.status(400).json({ error: 'Missing required fields' });
     }
+
+    // Header-Injection verhindern: Zeilenumbrueche aus dem Namen entfernen
+    const safeName = String(name).replace(/[\r\n]+/g, ' ').trim().slice(0, 100);
 
     const allowedExtensions = ['.pdf', '.doc', '.docx'];
     const ext = cv.filename.slice(cv.filename.lastIndexOf('.')).toLowerCase();
@@ -38,15 +41,18 @@ module.exports = async (req, res) => {
             from: '"NextGen Webseite" <info@nextgenforum.de>',
             to: 'info@nextgenforum.de',
             replyTo: email,
-            subject: `CV-Check Anfrage: ${email}`,
+            subject: `[CV-Check] ${safeName} hat einen CV hochgeladen`,
             text: `Neue CV-Check-Anfrage eingegangen.
 
+Leistung: CV-Check
+Name: ${safeName}
 E-Mail: ${email}
 Datei: ${cv.filename}
 Datenschutz akzeptiert: ${privacy ? 'JA' : 'NEIN'}
             `,
             html: `
-        <h3>Neue CV-Check-Anfrage eingegangen</h3>
+        <h3>Neue Anfrage: CV-Check</h3>
+        <p><strong>Name:</strong> ${safeName}</p>
         <p><strong>E-Mail:</strong> ${email}</p>
         <p><strong>Datei:</strong> ${cv.filename}</p>
         <p><strong>Datenschutz akzeptiert:</strong> ${privacy ? '✅ Ja' : '❌ Nein'}</p>
