@@ -181,207 +181,32 @@
                 </div>
             </section>
 
-            <section class="w-full bg-white dark:bg-background-dark py-20">
-                <div class="container mx-auto px-4">
-                    <div class="max-w-3xl mx-auto text-center mb-12">
-                        <div
-                            class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-[#0E4B94] to-[#2CD9C3] rounded-2xl text-white mb-6 shadow-lg">
-                            <span class="material-symbols-outlined" style="font-size: 2rem;">fact_check</span>
-                        </div>
-                        <p class="text-xs font-bold uppercase tracking-widest text-[#0E4B94] dark:text-[#2CD9C3] mb-3">
-                            Leistung 01</p>
-                        <h2 class="text-3xl md:text-4xl font-bold mb-4 text-black dark:text-white">Kostenloser
-                            CV-Check</h2>
-                        <p class="text-lg text-gray-600 dark:text-gray-300">
-                            Lade deinen Lebenslauf hoch und erhalte ehrliches, konstruktives Feedback von uns –
-                            kostenlos und unverbindlich.
-                        </p>
-                    </div>
-
-                    <div class="max-w-2xl mx-auto">
-                        <div class="flex flex-col sm:flex-row justify-center gap-6 sm:gap-10 mb-10">
-                            <div class="flex items-center gap-3 justify-center">
-                                <span
-                                    class="material-symbols-outlined text-[#0E4B94] dark:text-[#2CD9C3]">rate_review</span>
-                                <span class="text-sm text-gray-600 dark:text-gray-300">Feedback zu Aufbau, Inhalt
-                                    &amp; Formulierungen</span>
-                            </div>
-                            <div class="flex items-center gap-3 justify-center">
-                                <span
-                                    class="material-symbols-outlined text-[#0E4B94] dark:text-[#2CD9C3]">forward_to_inbox</span>
-                                <span class="text-sm text-gray-600 dark:text-gray-300">Rückmeldung per E-Mail
-                                    innerhalb weniger Tage</span>
-                            </div>
-                        </div>
-
-                        <div
-                            class="bg-[#F4F7F6] dark:bg-gray-800/50 rounded-2xl border border-gray-100 dark:border-gray-700/50 p-8 md:p-10 shadow-sm">
-                            <form id="cv-check-form" class="space-y-6">
-                                <div>
-                                    <label for="cv-check-file"
-                                        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Dein
-                                        Lebenslauf (PDF, DOC oder DOCX, max. 2 MB)</label>
-                                    <label for="cv-check-file" id="cv-check-dropzone"
-                                        class="flex flex-col items-center justify-center gap-2 w-full py-8 px-4 rounded-xl border-2 border-dashed border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 hover:border-[#2CD9C3] hover:bg-[#2CD9C3]/5 transition-colors cursor-pointer text-center">
-                                        <span
-                                            class="material-symbols-outlined text-[#0E4B94] dark:text-[#2CD9C3]"
-                                            style="font-size: 2.5rem;">upload_file</span>
-                                        <span id="cv-check-file-label"
-                                            class="text-sm font-medium text-gray-700 dark:text-gray-300">Datei
-                                            auswählen oder hierher ziehen</span>
-                                        <span class="text-xs text-gray-400">PDF, DOC oder DOCX · max. 2 MB</span>
-                                    </label>
-                                    <input type="file" id="cv-check-file" accept=".pdf,.doc,.docx" required
-                                        class="sr-only">
-                                    <p id="cv-check-file-error" class="hidden text-red-500 text-sm mt-2"></p>
-                                </div>
-                                <div>
-                                    <label for="cv-check-email"
-                                        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Deine
-                                        E-Mail-Adresse für die Rückmeldung</label>
-                                    <input type="email" id="cv-check-email" required
-                                        class="w-full px-4 h-12 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2CD9C3] dark:text-white transition-all">
-                                </div>
-                                <div class="flex items-start">
-                                    <input id="cv-check-privacy" type="checkbox" required
-                                        class="h-4 w-4 rounded border-gray-300 text-[#0E4B94] focus:ring-[#2CD9C3] mt-1 flex-shrink-0">
-                                    <label for="cv-check-privacy"
-                                        class="ml-3 text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
-                                        Ich stimme der Verarbeitung meiner Daten zum Zweck des CV-Checks gemäß der
-                                        <a href="datenschutzerklarung.html" target="_blank"
-                                            class="text-primary underline">Datenschutzerklärung</a> zu. Die
-                                        Rückmeldung erfolgt an die angegebene E-Mail-Adresse.
-                                    </label>
-                                </div>
-                                <div class="pt-2">
-                                    <button type="submit"
-                                        class="w-full h-14 bg-gradient-to-r from-[#0E4B94] to-[#2CD9C3] text-white font-bold rounded-lg hover:scale-[1.02] transition-transform shadow-lg">CV
-                                        einreichen</button>
-                                </div>
-                                <p id="cv-check-status" class="text-center text-sm hidden"></p>
-                            </form>
-                            <div id="success-container-cv-check"
-                                class="hidden flex-col items-center justify-center text-center py-6">
-                                <div
-                                    class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4 border-4 border-green-200 animate-scale-in">
-                                    <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path class="animate-draw-check" stroke-linecap="round" stroke-linejoin="round"
-                                            stroke-width="3" d="M5 13l4 4L19 7"></path>
-                                    </svg>
-                                </div>
-                                <h3 class="text-xl font-bold text-green-600 dark:text-green-400 mb-2">CV eingegangen!
-                                </h3>
-                                <p class="text-gray-600 dark:text-gray-300">Danke für deinen Upload. Wir schauen uns
-                                    deinen Lebenslauf an und melden uns innerhalb weniger Tage per E-Mail bei dir.</p>
-                            </div>
-                            <script>
-                                const cvCheckForm = document.getElementById('cv-check-form');
-                                const cvCheckSuccess = document.getElementById('success-container-cv-check');
-                                const cvCheckFile = document.getElementById('cv-check-file');
-                                const cvCheckFileError = document.getElementById('cv-check-file-error');
-                                const cvCheckStatus = document.getElementById('cv-check-status');
-                                const CV_CHECK_MAX = 2 * 1024 * 1024;
-                                const CV_CHECK_TYPES = ['.pdf', '.doc', '.docx'];
-
-                                function cvCheckValidate() {
-                                    cvCheckFileError.classList.add('hidden');
-                                    const f = cvCheckFile.files[0];
-                                    if (!f) return false;
-                                    const ext = f.name.slice(f.name.lastIndexOf('.')).toLowerCase();
-                                    if (!CV_CHECK_TYPES.includes(ext)) {
-                                        cvCheckFileError.innerText = 'Bitte nur PDF, DOC oder DOCX hochladen.';
-                                        cvCheckFileError.classList.remove('hidden');
-                                        return false;
-                                    }
-                                    if (f.size > CV_CHECK_MAX) {
-                                        cvCheckFileError.innerText = 'Die Datei ist zu groß (max. 2 MB).';
-                                        cvCheckFileError.classList.remove('hidden');
-                                        return false;
-                                    }
-                                    return true;
-                                }
-                                cvCheckFile.addEventListener('change', function () {
-                                    const label = document.getElementById('cv-check-file-label');
-                                    if (cvCheckValidate() && cvCheckFile.files[0]) {
-                                        label.innerText = cvCheckFile.files[0].name;
-                                        label.classList.add('text-[#0E4B94]', 'dark:text-[#2CD9C3]');
-                                    } else {
-                                        label.innerText = 'Datei auswählen oder hierher ziehen';
-                                        label.classList.remove('text-[#0E4B94]', 'dark:text-[#2CD9C3]');
-                                    }
-                                });
-
-                                const cvCheckDropzone = document.getElementById('cv-check-dropzone');
-                                ['dragover', 'dragenter'].forEach(evt => cvCheckDropzone.addEventListener(evt, e => {
-                                    e.preventDefault();
-                                    cvCheckDropzone.classList.add('border-[#2CD9C3]', 'bg-[#2CD9C3]/5');
-                                }));
-                                ['dragleave', 'drop'].forEach(evt => cvCheckDropzone.addEventListener(evt, e => {
-                                    e.preventDefault();
-                                    cvCheckDropzone.classList.remove('border-[#2CD9C3]', 'bg-[#2CD9C3]/5');
-                                }));
-                                cvCheckDropzone.addEventListener('drop', e => {
-                                    if (e.dataTransfer.files.length) {
-                                        cvCheckFile.files = e.dataTransfer.files;
-                                        cvCheckFile.dispatchEvent(new Event('change'));
-                                    }
-                                });
-
-                                const cvToBase64 = file => new Promise((resolve, reject) => {
-                                    const reader = new FileReader();
-                                    reader.readAsDataURL(file);
-                                    reader.onload = () => resolve(reader.result.split(',')[1]);
-                                    reader.onerror = reject;
-                                });
-
-                                cvCheckForm.addEventListener('submit', async function (e) {
-                                    e.preventDefault();
-                                    if (!cvCheckValidate()) return;
-                                    const submitBtn = cvCheckForm.querySelector('button[type="submit"]');
-                                    const originalText = submitBtn.innerText;
-                                    submitBtn.disabled = true;
-                                    submitBtn.innerText = 'Wird hochgeladen...';
-                                    submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
-                                    cvCheckStatus.classList.add('hidden');
-                                    try {
-                                        const file = cvCheckFile.files[0];
-                                        const response = await fetch('/api/cv-check', {
-                                            method: 'POST',
-                                            headers: { 'Content-Type': 'application/json' },
-                                            body: JSON.stringify({
-                                                email: document.getElementById('cv-check-email').value,
-                                                privacy: document.getElementById('cv-check-privacy').checked,
-                                                cv: {
-                                                    filename: file.name,
-                                                    content: await cvToBase64(file)
-                                                }
-                                            })
-                                        });
-                                        if (!response.ok) throw new Error('Serverfehler');
-                                        cvCheckForm.classList.add('hidden');
-                                        cvCheckSuccess.classList.remove('hidden');
-                                        cvCheckSuccess.classList.add('flex');
-                                    } catch (error) {
-                                        console.error('CV-Check error:', error);
-                                        cvCheckStatus.innerText = 'Leider gab es ein Problem beim Hochladen. Bitte versuche es später erneut oder schreibe uns an info@nextgenforum.de.';
-                                        cvCheckStatus.classList.remove('hidden');
-                                        cvCheckStatus.classList.add('text-red-500');
-                                    } finally {
-                                        submitBtn.disabled = false;
-                                        submitBtn.innerText = originalText;
-                                        submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-                                    }
-                                });
-                            </script>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
             <section class="w-full bg-[#F4F7F6] dark:bg-background-dark/50 py-20">
                 <div class="container mx-auto px-4">
                     <div class="max-w-4xl mx-auto space-y-8">
+
+                        <div
+                            class="bg-white dark:bg-gray-800/50 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700/50 p-8 md:p-10 flex flex-col md:flex-row gap-8 items-start transition-all hover:shadow-md">
+                            <div
+                                class="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-[#0E4B94] to-[#2CD9C3] rounded-2xl text-white flex-shrink-0 shadow-lg">
+                                <span class="material-symbols-outlined" style="font-size: 2rem;">fact_check</span>
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-xs font-bold uppercase tracking-widest text-[#0E4B94] dark:text-[#2CD9C3] mb-2">
+                                    Leistung 01</p>
+                                <h2 class="text-2xl font-bold mb-3 text-black dark:text-white">Kostenloser CV-Check
+                                </h2>
+                                <p class="text-gray-600 dark:text-gray-300 leading-relaxed mb-5">
+                                    Lade deinen Lebenslauf hoch und erhalte ehrliches, konstruktives Feedback von uns
+                                    – kostenlos und unverbindlich. Wir geben dir Rückmeldung zu Aufbau, Inhalt und
+                                    Formulierungen, per E-Mail innerhalb weniger Tage.
+                                </p>
+                                <button type="button" onclick="openCvCheckModal()"
+                                    class="inline-flex h-11 items-center justify-center rounded-lg bg-gradient-to-r from-[#0E4B94] to-[#2CD9C3] px-6 text-sm font-bold text-white transition-transform hover:scale-105 shadow-md">
+                                    CV hochladen</button>
+                            </div>
+                        </div>
+
 
                         <div
                             class="bg-white dark:bg-gray-800/50 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700/50 p-8 md:p-10 flex flex-col md:flex-row gap-8 items-start transition-all hover:shadow-md">
@@ -524,6 +349,201 @@
                     </div>
                 </div>
             </section>
+
+        
+            <!-- CV-Check Modal -->
+            <div id="cv-check-modal"
+                class="fixed inset-0 z-[100] hidden bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+                <div
+                    class="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl w-full max-w-xl max-h-[90vh] overflow-y-auto p-6 md:p-8 relative text-left">
+                    <button onclick="closeCvCheckModal()"
+                        class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-white transition-colors">
+                        <span class="material-symbols-outlined" style="font-size: 2rem;">close</span>
+                    </button>
+
+                    <h2
+                        class="text-3xl font-extrabold bg-gradient-to-r from-[#0E4B94] to-[#2CD9C3] bg-clip-text text-transparent mb-2">
+                        CV hochladen</h2>
+                    <p class="text-sm text-gray-600 dark:text-gray-300 mb-6">Kostenloser CV-Check – Rückmeldung per
+                        E-Mail innerhalb weniger Tage.</p>
+
+<form id="cv-check-form" class="space-y-6">
+                                <div>
+                                    <label for="cv-check-file"
+                                        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Dein
+                                        Lebenslauf (PDF, DOC oder DOCX, max. 2 MB)</label>
+                                    <label for="cv-check-file" id="cv-check-dropzone"
+                                        class="flex flex-col items-center justify-center gap-2 w-full py-8 px-4 rounded-xl border-2 border-dashed border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 hover:border-[#2CD9C3] hover:bg-[#2CD9C3]/5 transition-colors cursor-pointer text-center">
+                                        <span
+                                            class="material-symbols-outlined text-[#0E4B94] dark:text-[#2CD9C3]"
+                                            style="font-size: 2.5rem;">upload_file</span>
+                                        <span id="cv-check-file-label"
+                                            class="text-sm font-medium text-gray-700 dark:text-gray-300">Datei
+                                            auswählen oder hierher ziehen</span>
+                                        <span class="text-xs text-gray-400">PDF, DOC oder DOCX · max. 2 MB</span>
+                                    </label>
+                                    <input type="file" id="cv-check-file" accept=".pdf,.doc,.docx" required
+                                        class="sr-only">
+                                    <p id="cv-check-file-error" class="hidden text-red-500 text-sm mt-2"></p>
+                                </div>
+                                <div>
+                                    <label for="cv-check-email"
+                                        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Deine
+                                        E-Mail-Adresse für die Rückmeldung</label>
+                                    <input type="email" id="cv-check-email" required
+                                        class="w-full px-4 h-12 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2CD9C3] dark:text-white transition-all">
+                                </div>
+                                <div class="flex items-start">
+                                    <input id="cv-check-privacy" type="checkbox" required
+                                        class="h-4 w-4 rounded border-gray-300 text-[#0E4B94] focus:ring-[#2CD9C3] mt-1 flex-shrink-0">
+                                    <label for="cv-check-privacy"
+                                        class="ml-3 text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+                                        Ich stimme der Verarbeitung meiner Daten zum Zweck des CV-Checks gemäß der
+                                        <a href="datenschutzerklarung.html" target="_blank"
+                                            class="text-primary underline">Datenschutzerklärung</a> zu. Die
+                                        Rückmeldung erfolgt an die angegebene E-Mail-Adresse.
+                                    </label>
+                                </div>
+                                <div class="pt-2">
+                                    <button type="submit"
+                                        class="w-full h-14 bg-gradient-to-r from-[#0E4B94] to-[#2CD9C3] text-white font-bold rounded-lg hover:scale-[1.02] transition-transform shadow-lg">CV
+                                        einreichen</button>
+                                </div>
+                                <p id="cv-check-status" class="text-center text-sm hidden"></p>
+                            </form>
+<div id="success-container-cv-check"
+                                class="hidden flex-col items-center justify-center text-center py-6">
+                                <div
+                                    class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4 border-4 border-green-200 animate-scale-in">
+                                    <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path class="animate-draw-check" stroke-linecap="round" stroke-linejoin="round"
+                                            stroke-width="3" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                </div>
+                                <h3 class="text-xl font-bold text-green-600 dark:text-green-400 mb-2">CV eingegangen!
+                                </h3>
+                                <p class="text-gray-600 dark:text-gray-300">Danke für deinen Upload. Wir schauen uns
+                                    deinen Lebenslauf an und melden uns innerhalb weniger Tage per E-Mail bei dir.</p>
+                            </div>
+<script>
+                                const cvCheckForm = document.getElementById('cv-check-form');
+                                const cvCheckSuccess = document.getElementById('success-container-cv-check');
+                                const cvCheckFile = document.getElementById('cv-check-file');
+                                const cvCheckFileError = document.getElementById('cv-check-file-error');
+                                const cvCheckStatus = document.getElementById('cv-check-status');
+                                const CV_CHECK_MAX = 2 * 1024 * 1024;
+                                const CV_CHECK_TYPES = ['.pdf', '.doc', '.docx'];
+
+                                function cvCheckValidate() {
+                                    cvCheckFileError.classList.add('hidden');
+                                    const f = cvCheckFile.files[0];
+                                    if (!f) return false;
+                                    const ext = f.name.slice(f.name.lastIndexOf('.')).toLowerCase();
+                                    if (!CV_CHECK_TYPES.includes(ext)) {
+                                        cvCheckFileError.innerText = 'Bitte nur PDF, DOC oder DOCX hochladen.';
+                                        cvCheckFileError.classList.remove('hidden');
+                                        return false;
+                                    }
+                                    if (f.size > CV_CHECK_MAX) {
+                                        cvCheckFileError.innerText = 'Die Datei ist zu groß (max. 2 MB).';
+                                        cvCheckFileError.classList.remove('hidden');
+                                        return false;
+                                    }
+                                    return true;
+                                }
+                                cvCheckFile.addEventListener('change', function () {
+                                    const label = document.getElementById('cv-check-file-label');
+                                    if (cvCheckValidate() && cvCheckFile.files[0]) {
+                                        label.innerText = cvCheckFile.files[0].name;
+                                        label.classList.add('text-[#0E4B94]', 'dark:text-[#2CD9C3]');
+                                    } else {
+                                        label.innerText = 'Datei auswählen oder hierher ziehen';
+                                        label.classList.remove('text-[#0E4B94]', 'dark:text-[#2CD9C3]');
+                                    }
+                                });
+
+                                const cvCheckDropzone = document.getElementById('cv-check-dropzone');
+                                ['dragover', 'dragenter'].forEach(evt => cvCheckDropzone.addEventListener(evt, e => {
+                                    e.preventDefault();
+                                    cvCheckDropzone.classList.add('border-[#2CD9C3]', 'bg-[#2CD9C3]/5');
+                                }));
+                                ['dragleave', 'drop'].forEach(evt => cvCheckDropzone.addEventListener(evt, e => {
+                                    e.preventDefault();
+                                    cvCheckDropzone.classList.remove('border-[#2CD9C3]', 'bg-[#2CD9C3]/5');
+                                }));
+                                cvCheckDropzone.addEventListener('drop', e => {
+                                    if (e.dataTransfer.files.length) {
+                                        cvCheckFile.files = e.dataTransfer.files;
+                                        cvCheckFile.dispatchEvent(new Event('change'));
+                                    }
+                                });
+
+                                const cvToBase64 = file => new Promise((resolve, reject) => {
+                                    const reader = new FileReader();
+                                    reader.readAsDataURL(file);
+                                    reader.onload = () => resolve(reader.result.split(',')[1]);
+                                    reader.onerror = reject;
+                                });
+
+                                cvCheckForm.addEventListener('submit', async function (e) {
+                                    e.preventDefault();
+                                    if (!cvCheckValidate()) return;
+                                    const submitBtn = cvCheckForm.querySelector('button[type="submit"]');
+                                    const originalText = submitBtn.innerText;
+                                    submitBtn.disabled = true;
+                                    submitBtn.innerText = 'Wird hochgeladen...';
+                                    submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                                    cvCheckStatus.classList.add('hidden');
+                                    try {
+                                        const file = cvCheckFile.files[0];
+                                        const response = await fetch('/api/cv-check', {
+                                            method: 'POST',
+                                            headers: { 'Content-Type': 'application/json' },
+                                            body: JSON.stringify({
+                                                email: document.getElementById('cv-check-email').value,
+                                                privacy: document.getElementById('cv-check-privacy').checked,
+                                                cv: {
+                                                    filename: file.name,
+                                                    content: await cvToBase64(file)
+                                                }
+                                            })
+                                        });
+                                        if (!response.ok) throw new Error('Serverfehler');
+                                        cvCheckForm.classList.add('hidden');
+                                        cvCheckSuccess.classList.remove('hidden');
+                                        cvCheckSuccess.classList.add('flex');
+                                    } catch (error) {
+                                        console.error('CV-Check error:', error);
+                                        cvCheckStatus.innerText = 'Leider gab es ein Problem beim Hochladen. Bitte versuche es später erneut oder schreibe uns an info@nextgenforum.de.';
+                                        cvCheckStatus.classList.remove('hidden');
+                                        cvCheckStatus.classList.add('text-red-500');
+                                    } finally {
+                                        submitBtn.disabled = false;
+                                        submitBtn.innerText = originalText;
+                                        submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                                    }
+                                });
+                            </script>
+                    <script>
+                        function openCvCheckModal() {
+                            const modal = document.getElementById('cv-check-modal');
+                            modal.classList.remove('hidden');
+                            document.body.style.overflow = 'hidden';
+                        }
+                        function closeCvCheckModal() {
+                            const modal = document.getElementById('cv-check-modal');
+                            modal.classList.add('hidden');
+                            document.body.style.overflow = '';
+                        }
+                        document.getElementById('cv-check-modal').addEventListener('click', function (e) {
+                            if (e.target === this) {
+                                closeCvCheckModal();
+                            }
+                        });
+                    </script>
+                </div>
+            </div>
 
         </main>
         <footer class="w-full bg-gray-100 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 py-8 relative">
