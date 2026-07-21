@@ -254,44 +254,62 @@
 
             <section class="w-full bg-white dark:bg-background-dark py-20">
                 <div class="container mx-auto px-4">
-                    <div
-                        class="max-w-4xl mx-auto bg-white dark:bg-gray-800/50 rounded-2xl shadow-xl overflow-hidden flex flex-col md:flex-row border border-gray-100 dark:border-gray-700">
+                    <div class="max-w-3xl mx-auto text-center mb-12">
                         <div
-                            class="md:w-1/2 p-8 md:p-12 flex flex-col justify-center bg-gradient-to-br from-[#0E4B94] to-[#0a356b] text-white">
-                            <h2 class="text-3xl font-bold mb-4">Kostenloser CV-Check</h2>
-                            <p class="text-white/80 mb-6">Lade deinen Lebenslauf hoch und erhalte ehrliches,
-                                konstruktives Feedback von uns – kostenlos und unverbindlich.</p>
-                            <ul class="space-y-3">
-                                <li class="flex items-start gap-3"><span
-                                        class="material-symbols-outlined text-[#2CD9C3] flex-shrink-0">check_circle</span><span
-                                        class="leading-relaxed">Persönliches Feedback zu Aufbau, Inhalt und
-                                        Formulierungen</span></li>
-                                <li class="flex items-start gap-3"><span
-                                        class="material-symbols-outlined text-[#2CD9C3] flex-shrink-0">check_circle</span><span
-                                        class="leading-relaxed">Tipps aus der Praxis der
-                                        Versicherungsbranche</span></li>
-                                <li class="flex items-start gap-3"><span
-                                        class="material-symbols-outlined text-[#2CD9C3] flex-shrink-0">check_circle</span><span
-                                        class="leading-relaxed">Rückmeldung per E-Mail innerhalb weniger
-                                        Tage</span></li>
-                            </ul>
+                            class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-[#0E4B94] to-[#2CD9C3] rounded-2xl text-white mb-6 shadow-lg">
+                            <span class="material-symbols-outlined" style="font-size: 2rem;">fact_check</span>
                         </div>
-                        <div class="md:w-1/2 p-8 md:p-12">
+                        <h2 class="text-3xl md:text-4xl font-bold mb-4 text-black dark:text-white">Kostenloser
+                            CV-Check</h2>
+                        <p class="text-lg text-gray-600 dark:text-gray-300">
+                            Lade deinen Lebenslauf hoch und erhalte ehrliches, konstruktives Feedback von uns –
+                            kostenlos und unverbindlich.
+                        </p>
+                    </div>
+
+                    <div class="max-w-2xl mx-auto">
+                        <div class="flex flex-col sm:flex-row justify-center gap-6 sm:gap-10 mb-10">
+                            <div class="flex items-center gap-3 justify-center">
+                                <span
+                                    class="material-symbols-outlined text-[#0E4B94] dark:text-[#2CD9C3]">rate_review</span>
+                                <span class="text-sm text-gray-600 dark:text-gray-300">Feedback zu Aufbau, Inhalt
+                                    &amp; Formulierungen</span>
+                            </div>
+                            <div class="flex items-center gap-3 justify-center">
+                                <span
+                                    class="material-symbols-outlined text-[#0E4B94] dark:text-[#2CD9C3]">forward_to_inbox</span>
+                                <span class="text-sm text-gray-600 dark:text-gray-300">Rückmeldung per E-Mail
+                                    innerhalb weniger Tage</span>
+                            </div>
+                        </div>
+
+                        <div
+                            class="bg-[#F4F7F6] dark:bg-gray-800/50 rounded-2xl border border-gray-100 dark:border-gray-700/50 p-8 md:p-10 shadow-sm">
                             <form id="cv-check-form" class="space-y-6">
-                                <div>
-                                    <label for="cv-check-email"
-                                        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Deine
-                                        E-Mail-Adresse</label>
-                                    <input type="email" id="cv-check-email" required
-                                        class="w-full px-4 h-12 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2CD9C3] dark:text-white transition-all">
-                                </div>
                                 <div>
                                     <label for="cv-check-file"
                                         class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Dein
                                         Lebenslauf (PDF, DOC oder DOCX, max. 2 MB)</label>
+                                    <label for="cv-check-file" id="cv-check-dropzone"
+                                        class="flex flex-col items-center justify-center gap-2 w-full py-8 px-4 rounded-xl border-2 border-dashed border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 hover:border-[#2CD9C3] hover:bg-[#2CD9C3]/5 transition-colors cursor-pointer text-center">
+                                        <span
+                                            class="material-symbols-outlined text-[#0E4B94] dark:text-[#2CD9C3]"
+                                            style="font-size: 2.5rem;">upload_file</span>
+                                        <span id="cv-check-file-label"
+                                            class="text-sm font-medium text-gray-700 dark:text-gray-300">Datei
+                                            auswählen oder hierher ziehen</span>
+                                        <span class="text-xs text-gray-400">PDF, DOC oder DOCX · max. 2 MB</span>
+                                    </label>
                                     <input type="file" id="cv-check-file" accept=".pdf,.doc,.docx" required
-                                        class="w-full text-sm text-gray-600 dark:text-gray-300 file:mr-4 file:py-2.5 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-[#0E4B94]/10 file:text-[#0E4B94] dark:file:bg-[#2CD9C3]/10 dark:file:text-[#2CD9C3] hover:file:bg-[#0E4B94]/20 dark:hover:file:bg-[#2CD9C3]/20 file:cursor-pointer cursor-pointer">
-                                    <p id="cv-check-file-error" class="hidden text-red-500 text-sm mt-1"></p>
+                                        class="sr-only">
+                                    <p id="cv-check-file-error" class="hidden text-red-500 text-sm mt-2"></p>
+                                </div>
+                                <div>
+                                    <label for="cv-check-email"
+                                        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Deine
+                                        E-Mail-Adresse für die Rückmeldung</label>
+                                    <input type="email" id="cv-check-email" required
+                                        class="w-full px-4 h-12 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-[#2CD9C3] dark:text-white transition-all">
                                 </div>
                                 <div class="flex items-start">
                                     <input id="cv-check-privacy" type="checkbox" required
@@ -352,7 +370,32 @@
                                     }
                                     return true;
                                 }
-                                cvCheckFile.addEventListener('change', cvCheckValidate);
+                                cvCheckFile.addEventListener('change', function () {
+                                    const label = document.getElementById('cv-check-file-label');
+                                    if (cvCheckValidate() && cvCheckFile.files[0]) {
+                                        label.innerText = cvCheckFile.files[0].name;
+                                        label.classList.add('text-[#0E4B94]', 'dark:text-[#2CD9C3]');
+                                    } else {
+                                        label.innerText = 'Datei auswählen oder hierher ziehen';
+                                        label.classList.remove('text-[#0E4B94]', 'dark:text-[#2CD9C3]');
+                                    }
+                                });
+
+                                const cvCheckDropzone = document.getElementById('cv-check-dropzone');
+                                ['dragover', 'dragenter'].forEach(evt => cvCheckDropzone.addEventListener(evt, e => {
+                                    e.preventDefault();
+                                    cvCheckDropzone.classList.add('border-[#2CD9C3]', 'bg-[#2CD9C3]/5');
+                                }));
+                                ['dragleave', 'drop'].forEach(evt => cvCheckDropzone.addEventListener(evt, e => {
+                                    e.preventDefault();
+                                    cvCheckDropzone.classList.remove('border-[#2CD9C3]', 'bg-[#2CD9C3]/5');
+                                }));
+                                cvCheckDropzone.addEventListener('drop', e => {
+                                    if (e.dataTransfer.files.length) {
+                                        cvCheckFile.files = e.dataTransfer.files;
+                                        cvCheckFile.dispatchEvent(new Event('change'));
+                                    }
+                                });
 
                                 const cvToBase64 = file => new Promise((resolve, reject) => {
                                     const reader = new FileReader();
